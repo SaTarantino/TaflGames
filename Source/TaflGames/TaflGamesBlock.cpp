@@ -11,14 +11,15 @@ ATaflGamesBlock::ATaflGamesBlock()
 	struct FConstructorStatics
 	{
 		ConstructorHelpers::FObjectFinderOptional<UStaticMesh> PlaneMesh;
-		ConstructorHelpers::FObjectFinderOptional<UMaterial> BaseMaterial;
-		ConstructorHelpers::FObjectFinderOptional<UMaterialInstance> BlueMaterial;
-		ConstructorHelpers::FObjectFinderOptional<UMaterialInstance> OrangeMaterial;
+		ConstructorHelpers::FObjectFinderOptional<UMaterial> M_Wood_Floor_Walnut_Worn;
+		//ConstructorHelpers::FObjectFinderOptional<UMaterial> BaseMaterial;
+		//ConstructorHelpers::FObjectFinderOptional<UMaterialInstance> OrangeMaterial;
+
 		FConstructorStatics()
 			: PlaneMesh(TEXT("/Game/Puzzle/Meshes/PuzzleCube.PuzzleCube"))
-			, BaseMaterial(TEXT("/Game/Puzzle/Meshes/BaseMaterial.BaseMaterial"))
-			, BlueMaterial(TEXT("/Game/Puzzle/Meshes/BlueMaterial.BlueMaterial"))
-			, OrangeMaterial(TEXT("/Game/Puzzle/Meshes/OrangeMaterial.OrangeMaterial"))
+			, M_Wood_Floor_Walnut_Worn(TEXT("/Game/Puzzle/Meshes/M_Wood_Floor_Walnut_Worn.M_Wood_Floor_Walnut_Worn"))
+			//, BaseMaterial(TEXT("/Game/Puzzle/Meshes/BaseMaterial.BaseMaterial"))
+			//, OrangeMaterial(TEXT("/Game/Puzzle/Meshes/OrangeMaterial.OrangeMaterial"))
 		{
 		}
 	};
@@ -33,14 +34,13 @@ ATaflGamesBlock::ATaflGamesBlock()
 	BlockMesh->SetStaticMesh(ConstructorStatics.PlaneMesh.Get());
 	BlockMesh->SetRelativeScale3D(FVector(1.f, 1.f, 0.f));
 	BlockMesh->SetRelativeLocation(FVector(0.f, 0.f, 25.f));
-	BlockMesh->SetMaterial(0, ConstructorStatics.OrangeMaterial.Get());
+	BlockMesh->SetMaterial(0, ConstructorStatics.M_Wood_Floor_Walnut_Worn.Get());
 	BlockMesh->SetupAttachment(DummyRoot);
 	BlockMesh->OnClicked.AddDynamic(this, &ATaflGamesBlock::BlockClicked);
 
-	// Save a pointer to the orange material
-	BaseMaterial = ConstructorStatics.BaseMaterial.Get();
-	BlueMaterial = ConstructorStatics.BlueMaterial.Get();
-	OrangeMaterial = ConstructorStatics.OrangeMaterial.Get();
+	// Save a pointer to the orange material. USATO nel caso serva cambiare colore ai blocchi.
+	/*BaseMaterial = ConstructorStatics.BaseMaterial.Get();
+	OrangeMaterial = ConstructorStatics.OrangeMaterial.Get();*/
 }
 
 void ATaflGamesBlock::BlockClicked(UPrimitiveComponent* ClickedComp, FKey ButtonClicked)

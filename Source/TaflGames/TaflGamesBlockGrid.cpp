@@ -29,9 +29,10 @@ void ATaflGamesBlockGrid::BeginPlay()
 {
 	Super::BeginPlay();
 
+	ATaflGamesGameMode* GameMode = Cast<ATaflGamesGameMode>(GetWorld()->GetAuthGameMode());
+	int index = -1;
 	// Number of blocks
 	const int32 NumBlocks = Size * Size;
-	int index = -1;
 	// Loop to spawn each block
 	for (int32 BlockIndex = 0; BlockIndex < NumBlocks; BlockIndex++)
 	{
@@ -43,17 +44,18 @@ void ATaflGamesBlockGrid::BeginPlay()
 
 		// Spawn a block
 		ATaflGamesBlock* NewBlock = GetWorld()->SpawnActor<ATaflGamesBlock>(BlockLocation, FRotator(0, 0, 0));
-		ATaflGamesPiece* NewPiece = GetWorld()->SpawnActor<ATaflGamesPiece>(BlockLocation, FRotator(0, 0, 0));
-		ATaflGamesGameMode* GameMode = Cast<ATaflGamesGameMode>(GetWorld()->GetAuthGameMode());
+		index++;
+		
+		// If the index is in the array of the spawn, spawn a pice in that blox.
+		if (GameMode->spawn->Contains(index))
+		{
+			ATaflGamesPiece* NewPiece = GetWorld()->SpawnActor<ATaflGamesPiece>(BlockLocation, FRotator(0, 0, 0));
+		}
+		
 		// Tell the block about its owner
 		if (NewBlock != nullptr)
 		{
 			NewBlock->OwningGrid = this;
-			index++;
-			if (GameMode->spawn->Contains(index))
-			{
-				NewPiece->OwningGrid = this;
-			}
 		}
 	}
 }

@@ -19,8 +19,8 @@ public:
 	// Sets default values for this actor's properties
 	ATaflGamesPiece();
 
-	UPROPERTY()
-	class UMaterial* BaseMaterial;
+	/*UPROPERTY()
+	class UMaterial* BaseMaterial;*/
 
 	UPROPERTY()
 	class ATaflGamesBlockGrid* OwningGrid;
