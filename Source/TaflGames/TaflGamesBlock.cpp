@@ -12,14 +12,14 @@ ATaflGamesBlock::ATaflGamesBlock()
 	{
 		ConstructorHelpers::FObjectFinderOptional<UStaticMesh> PlaneMesh;
 		ConstructorHelpers::FObjectFinderOptional<UMaterial> M_Wood_Floor_Walnut_Worn;
-		//ConstructorHelpers::FObjectFinderOptional<UMaterial> BaseMaterial;
-		//ConstructorHelpers::FObjectFinderOptional<UMaterialInstance> OrangeMaterial;
+		ConstructorHelpers::FObjectFinderOptional<UMaterial> BaseMaterial;
+		ConstructorHelpers::FObjectFinderOptional<UMaterialInstance> OrangeMaterial;
 
 		FConstructorStatics()
 			: PlaneMesh(TEXT("/Game/Puzzle/Meshes/PuzzleCube.PuzzleCube"))
 			, M_Wood_Floor_Walnut_Worn(TEXT("/Game/Puzzle/Meshes/M_Wood_Floor_Walnut_Worn.M_Wood_Floor_Walnut_Worn"))
-			//, BaseMaterial(TEXT("/Game/Puzzle/Meshes/BaseMaterial.BaseMaterial"))
-			//, OrangeMaterial(TEXT("/Game/Puzzle/Meshes/OrangeMaterial.OrangeMaterial"))
+			, BaseMaterial(TEXT("/Game/Puzzle/Meshes/BaseMaterial.BaseMaterial"))
+			, OrangeMaterial(TEXT("/Game/Puzzle/Meshes/OrangeMaterial.OrangeMaterial"))
 		{
 		}
 	};
@@ -39,8 +39,9 @@ ATaflGamesBlock::ATaflGamesBlock()
 	BlockMesh->OnClicked.AddDynamic(this, &ATaflGamesBlock::BlockClicked);
 
 	// Save a pointer to the orange material. USATO nel caso serva cambiare colore ai blocchi.
-	/*BaseMaterial = ConstructorStatics.BaseMaterial.Get();
-	OrangeMaterial = ConstructorStatics.OrangeMaterial.Get();*/
+	M_Wood_Floor_Walnut_Worn = ConstructorStatics.M_Wood_Floor_Walnut_Worn.Get();
+	BaseMaterial = ConstructorStatics.BaseMaterial.Get();
+	OrangeMaterial = ConstructorStatics.OrangeMaterial.Get();
 }
 
 void ATaflGamesBlock::BlockClicked(UPrimitiveComponent* ClickedComp, FKey ButtonClicked)
@@ -56,7 +57,7 @@ void ATaflGamesBlock::HandleClicked()
 		bIsActive = true;
 
 		// Change material
-		BlockMesh->SetMaterial(0, BlueMaterial);
+		BlockMesh->SetMaterial(0, OrangeMaterial);
 
 		// Tell the Grid
 		if (OwningGrid != nullptr)
@@ -80,6 +81,6 @@ void ATaflGamesBlock::Highlight(bool bOn)
 	}
 	else
 	{
-		BlockMesh->SetMaterial(0, OrangeMaterial);
+		BlockMesh->SetMaterial(0, M_Wood_Floor_Walnut_Worn);
 	}
 }

@@ -8,15 +8,17 @@
 ATaflGamesPiece::ATaflGamesPiece()
 {
 	//Set this actor to call Tick() every frame.  You can turn this off to improve performance if you don't need it.
-	PrimaryActorTick.bCanEverTick = false;
+	//PrimaryActorTick.bCanEverTick = false;
 
 	struct FConstructorStatics
 	{
 		ConstructorHelpers::FObjectFinderOptional<UStaticMesh> Shape_Cylinder;
 		ConstructorHelpers::FObjectFinderOptional<UMaterial> M_Wood_Oak;
+		ConstructorHelpers::FObjectFinderOptional<UMaterialInstance> BaseMaterial;
 		FConstructorStatics()
 			: Shape_Cylinder(TEXT("/Game/StarterContent/Shapes/Shape_Cylinder.Shape_Cylinder"))
 			, M_Wood_Oak(TEXT("/Game/StarterContent/Materials/M_Wood_Oak.M_Wood_Oak"))
+			, BaseMaterial(TEXT("/Game/Puzzle/Meshes/BaseMaterial.BaseMaterial"))
 		{
 		}
 	};
@@ -33,6 +35,9 @@ ATaflGamesPiece::ATaflGamesPiece()
 	PieceMesh->SetupAttachment(PieceRoot);
 	PieceMesh->OnClicked.AddDynamic(this, &ATaflGamesPiece::PiaceClicked);
 
+	// Save a pointer to the orange material.
+	M_Wood_Oak = ConstructorStatics.M_Wood_Oak.Get();
+	BaseMaterial = ConstructorStatics.BaseMaterial.Get();
 }
 
 void ATaflGamesPiece::PiaceClicked(UPrimitiveComponent* ClickedComp, FKey ButtonClicked)
@@ -42,6 +47,10 @@ void ATaflGamesPiece::PiaceClicked(UPrimitiveComponent* ClickedComp, FKey Button
 
 void ATaflGamesPiece::HandleClicked()
 {
+	if (!bIsActive)
+	{
+		bIsActive = true;
+	}
 }
 
 // Called when the game starts or when spawned
@@ -51,10 +60,25 @@ void ATaflGamesPiece::BeginPlay()
 
 }
 
-// Called every frame
-void ATaflGamesPiece::Tick(float DeltaTime)
+void ATaflGamesPiece::Highlight(bool isActive)
 {
-	Super::Tick(DeltaTime);
+	if (bIsActive)
+	{
+		return;
+	}
 
+	if (isActive)
+	{
+		PieceMesh->SetMaterial(0, BaseMaterial);
+	}
+	else
+	{
+		PieceMesh->SetMaterial(0, M_Wood_Oak);
+	}
 }
 
+// Called every frame
+//void ATaflGamesPiece::Tick(float DeltaTime)
+//{
+//	Super::Tick(DeltaTime);
+//}

@@ -19,8 +19,15 @@ public:
 	// Sets default values for this actor's properties
 	ATaflGamesPiece();
 
-	/*UPROPERTY()
-	class UMaterial* BaseMaterial;*/
+	bool bIsActive;
+
+	/* Pointer to the base color used on the Attacking Pieces */
+	UPROPERTY()
+	class UMaterial* M_Wood_Oak;
+
+	/* Pointer to the white material used on the focussed block */
+	UPROPERTY()
+	class UMaterialInstance* BaseMaterial;
 
 	UPROPERTY()
 	class ATaflGamesBlockGrid* OwningGrid;
@@ -31,13 +38,15 @@ public:
 
 	void HandleClicked();
 
+	void Highlight(bool isActive);
+
 protected:
 	// Called when the game starts or when spawned
 	virtual void BeginPlay() override;
 
 public:
 	// Called every frame
-	virtual void Tick(float DeltaTime) override;
+	//virtual void Tick(float DeltaTime) override;
 
 public:
 	FORCEINLINE class USceneComponent* GetPieceRoot() const { return PieceRoot; }

@@ -26,11 +26,10 @@ public:
 
 	/** Pointer to white material used on the focused block */
 	UPROPERTY()
-	class UMaterial* BaseMaterial;
-
-	/** Pointer to blue material used on inactive blocks */
+	class UMaterial* M_Wood_Floor_Walnut_Worn;
+	
 	UPROPERTY()
-	class UMaterialInstance* BlueMaterial;
+	class UMaterial* BaseMaterial;
 
 	/** Pointer to orange material used on active blocks */
 	UPROPERTY()
