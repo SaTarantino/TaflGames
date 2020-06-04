@@ -11,15 +11,16 @@ ATaflGamesBlock::ATaflGamesBlock()
 	struct FConstructorStatics
 	{
 		ConstructorHelpers::FObjectFinderOptional<UStaticMesh> PlaneMesh;
-		ConstructorHelpers::FObjectFinderOptional<UMaterial> M_Wood_Floor_Walnut_Worn;
 		ConstructorHelpers::FObjectFinderOptional<UMaterial> BaseMaterial;
+		ConstructorHelpers::FObjectFinderOptional<UMaterialInstance> BlueMaterial;
 		ConstructorHelpers::FObjectFinderOptional<UMaterialInstance> OrangeMaterial;
-
+		//ConstructorHelpers::FObjectFinderOptional<UMaterialInstance> M_Wood_Oak;
 		FConstructorStatics()
 			: PlaneMesh(TEXT("/Game/Puzzle/Meshes/PuzzleCube.PuzzleCube"))
-			, M_Wood_Floor_Walnut_Worn(TEXT("/Game/Puzzle/Meshes/M_Wood_Floor_Walnut_Worn.M_Wood_Floor_Walnut_Worn"))
 			, BaseMaterial(TEXT("/Game/Puzzle/Meshes/BaseMaterial.BaseMaterial"))
 			, OrangeMaterial(TEXT("/Game/Puzzle/Meshes/OrangeMaterial.OrangeMaterial"))
+			, BlueMaterial(TEXT("/Game/Puzzle/Meshes/BlueMaterial.BlueMaterial"))
+			//, M_Wood_Oak(TEXT("/Game/Puzzle/Meshes/M_Wood_Oak.M_Wood_Oak"))
 		{
 		}
 	};
@@ -34,14 +35,15 @@ ATaflGamesBlock::ATaflGamesBlock()
 	BlockMesh->SetStaticMesh(ConstructorStatics.PlaneMesh.Get());
 	BlockMesh->SetRelativeScale3D(FVector(1.f, 1.f, 0.f));
 	BlockMesh->SetRelativeLocation(FVector(0.f, 0.f, 25.f));
-	BlockMesh->SetMaterial(0, ConstructorStatics.M_Wood_Floor_Walnut_Worn.Get());
+	BlockMesh->SetMaterial(0, ConstructorStatics.OrangeMaterial.Get());
 	BlockMesh->SetupAttachment(DummyRoot);
 	BlockMesh->OnClicked.AddDynamic(this, &ATaflGamesBlock::BlockClicked);
 
 	// Save a pointer to the orange material. USATO nel caso serva cambiare colore ai blocchi.
-	M_Wood_Floor_Walnut_Worn = ConstructorStatics.M_Wood_Floor_Walnut_Worn.Get();
 	BaseMaterial = ConstructorStatics.BaseMaterial.Get();
 	OrangeMaterial = ConstructorStatics.OrangeMaterial.Get();
+	BlueMaterial = ConstructorStatics.BlueMaterial.Get();
+	//M_Wood_Oak = ConstructorStatics.M_Wood_Oak.Get();
 }
 
 void ATaflGamesBlock::BlockClicked(UPrimitiveComponent* ClickedComp, FKey ButtonClicked)
@@ -57,13 +59,13 @@ void ATaflGamesBlock::HandleClicked()
 		bIsActive = true;
 
 		// Change material
-		BlockMesh->SetMaterial(0, OrangeMaterial);
+		BlockMesh->SetMaterial(0, BlueMaterial);
 
-		// Tell the Grid
-		if (OwningGrid != nullptr)
-		{
-
-		}
+		//// Tell the Grid
+		//if (OwningGrid != nullptr)
+		//{
+		//	OwningGrid->AddScore();
+		//}
 	}
 }
 
@@ -81,6 +83,6 @@ void ATaflGamesBlock::Highlight(bool bOn)
 	}
 	else
 	{
-		BlockMesh->SetMaterial(0, M_Wood_Floor_Walnut_Worn);
+		BlockMesh->SetMaterial(0, OrangeMaterial);
 	}
 }

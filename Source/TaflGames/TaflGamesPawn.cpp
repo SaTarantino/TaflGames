@@ -1,5 +1,6 @@
 #include "TaflGamesPawn.h"
 #include "TaflGamesBlock.h"
+#include "TaflGamesPiece.h"
 #include "HeadMountedDisplayFunctionLibrary.h"
 #include "Camera/CameraComponent.h"
 #include "GameFramework/PlayerController.h"
@@ -10,6 +11,33 @@ ATaflGamesPawn::ATaflGamesPawn(const FObjectInitializer& ObjectInitializer)
 	: Super(ObjectInitializer)
 {
 	AutoPossessPlayer = EAutoReceiveInput::Player0;
+}
+
+void ATaflGamesPawn::Tick(float DeltaSeconds)
+{
+	Super::Tick(DeltaSeconds);
+
+	if (APlayerController* PC = Cast<APlayerController>(GetController()))
+	{
+		if (UHeadMountedDisplayFunctionLibrary::IsHeadMountedDisplayEnabled())
+		{
+			if (UCameraComponent* OurCamera = PC->GetViewTarget()->FindComponentByClass<UCameraComponent>())
+			{
+				FVector Start = OurCamera->GetComponentLocation();
+				FVector End = Start + (OurCamera->GetComponentRotation().Vector() * 8000.0f);
+				TraceForBlock(Start, End, true);
+				//TraceForPiece(Start, End, true);
+			}
+		}
+		else
+		{
+			FVector Start, Dir, End;
+			PC->DeprojectMousePositionToWorld(Start, Dir);
+			End = Start + (Dir * 8000.0f);
+			TraceForBlock(Start, End, false);
+			//TraceForPiece(Start, End, false);
+		}
+	}
 }
 
 void ATaflGamesPawn::SetupPlayerInputComponent(UInputComponent* PlayerInputComponent)
@@ -63,5 +91,34 @@ void ATaflGamesPawn::TraceForBlock(const FVector& Start, const FVector& End, boo
 	{
 		CurrentBlockFocus->Highlight(false);
 		CurrentBlockFocus = nullptr;
+	}
+}
+
+void ATaflGamesPawn::TraceForPiece(const FVector& Start, const FVector& End, bool bDrawDebugHelpers)
+{
+	FHitResult HitResult;
+	GetWorld()->LineTraceSingleByChannel(HitResult, Start, End, ECC_Visibility);
+	if (bDrawDebugHelpers)
+	{
+		DrawDebugLine(GetWorld(), Start, HitResult.Location, FColor::Blue);
+		DrawDebugSolidBox(GetWorld(), HitResult.Location, FVector(20.0f), FColor::Blue);
+	}
+	if (HitResult.Actor.IsValid())
+	{
+		ATaflGamesPiece* HitPiece = Cast<ATaflGamesPiece>(HitResult.Actor.Get());
+		if (CurrentPieceFocus != HitPiece)
+		{
+			CurrentPieceFocus->Highlight(false);
+		}
+		if (HitPiece)
+		{
+			HitPiece->Highlight(true);
+		}
+		CurrentPieceFocus = HitPiece;
+	}
+	else if (CurrentPieceFocus)
+	{
+		CurrentPieceFocus->Highlight(false);
+		CurrentPieceFocus = nullptr;
 	}
 }

@@ -26,14 +26,16 @@ public:
 
 	/** Pointer to white material used on the focused block */
 	UPROPERTY()
-	class UMaterial* M_Wood_Floor_Walnut_Worn;
-	
-	UPROPERTY()
 	class UMaterial* BaseMaterial;
 
-	/** Pointer to orange material used on active blocks */
+	/*UPROPERTY()
+	class UMaterialInstance* M_Wood_Oak;*/
+
 	UPROPERTY()
 	class UMaterialInstance* OrangeMaterial;
+
+	UPROPERTY()
+	class UMaterialInstance* BlueMaterial;
 
 	/** Grid that owns us */
 	UPROPERTY()

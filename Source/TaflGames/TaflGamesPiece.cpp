@@ -53,13 +53,6 @@ void ATaflGamesPiece::HandleClicked()
 	}
 }
 
-// Called when the game starts or when spawned
-void ATaflGamesPiece::BeginPlay()
-{
-	Super::BeginPlay();
-
-}
-
 void ATaflGamesPiece::Highlight(bool isActive)
 {
 	if (bIsActive)
@@ -76,9 +69,3 @@ void ATaflGamesPiece::Highlight(bool isActive)
 		PieceMesh->SetMaterial(0, M_Wood_Oak);
 	}
 }
-
-// Called every frame
-//void ATaflGamesPiece::Tick(float DeltaTime)
-//{
-//	Super::Tick(DeltaTime);
-//}

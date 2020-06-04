@@ -10,6 +10,7 @@ class ATaflGamesPawn : public APawn
 	GENERATED_UCLASS_BODY()
 
 public:
+	virtual void Tick(float DeltaSeconds) override;
 
 	virtual void SetupPlayerInputComponent(UInputComponent* PlayerInputComponent) override;
 
@@ -18,7 +19,11 @@ public:
 protected:
 	void TriggerClick();
 	void TraceForBlock(const FVector& Start, const FVector& End, bool bDrawDebugHelpers);
+	void TraceForPiece(const FVector& Start, const FVector& End, bool bDrawDebugHelpers);
 
 	UPROPERTY(EditInstanceOnly, BlueprintReadWrite)
-		class ATaflGamesBlock* CurrentBlockFocus;
+	class ATaflGamesBlock* CurrentBlockFocus;
+
+	UPROPERTY(EditInstanceOnly, BlueprintReadWrite)
+	class ATaflGamesPiece* CurrentPieceFocus;
 };
