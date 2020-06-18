@@ -11,6 +11,7 @@ ATaflGamesPawn::ATaflGamesPawn(const FObjectInitializer& ObjectInitializer)
 	: Super(ObjectInitializer)
 {
 	AutoPossessPlayer = EAutoReceiveInput::Player0;
+	isPieceSelected = false;
 }
 
 void ATaflGamesPawn::Tick(float DeltaSeconds)
@@ -25,8 +26,8 @@ void ATaflGamesPawn::Tick(float DeltaSeconds)
 			{
 				FVector Start = OurCamera->GetComponentLocation();
 				FVector End = Start + (OurCamera->GetComponentRotation().Vector() * 8000.0f);
+				TraceForPiece(Start, End, true);
 				TraceForBlock(Start, End, true);
-				//TraceForPiece(Start, End, true);
 			}
 		}
 		else
@@ -35,7 +36,7 @@ void ATaflGamesPawn::Tick(float DeltaSeconds)
 			PC->DeprojectMousePositionToWorld(Start, Dir);
 			End = Start + (Dir * 8000.0f);
 			TraceForBlock(Start, End, false);
-			//TraceForPiece(Start, End, false);
+			TraceForPiece(Start, End, false);
 		}
 	}
 }
@@ -45,6 +46,7 @@ void ATaflGamesPawn::SetupPlayerInputComponent(UInputComponent* PlayerInputCompo
 	Super::SetupPlayerInputComponent(PlayerInputComponent);
 
 	PlayerInputComponent->BindAction("TriggerClick", EInputEvent::IE_Pressed, this, &ATaflGamesPawn::TriggerClick);
+	PlayerInputComponent->BindAction("ClickDown", EInputEvent::IE_Released, this, &ATaflGamesPawn::ReleaseClick);
 }
 
 void ATaflGamesPawn::CalcCamera(float DeltaTime, struct FMinimalViewInfo& OutResult)
@@ -56,9 +58,49 @@ void ATaflGamesPawn::CalcCamera(float DeltaTime, struct FMinimalViewInfo& OutRes
 
 void ATaflGamesPawn::TriggerClick()
 {
-	if (CurrentBlockFocus)
+	if (CurrentPieceFocus)
 	{
-		CurrentBlockFocus->HandleClicked();
+		CurrentPieceFocus->HandleClicked();
+	}
+}
+
+void ATaflGamesPawn::ReleaseClick()
+{
+}
+
+void ATaflGamesPawn::TraceForPiece(const FVector& Start, const FVector& End, bool bDrawDebugHelpers)
+{
+	FHitResult HitResult;
+	GetWorld()->LineTraceSingleByChannel(HitResult, Start, End, ECC_Visibility);
+	if (bDrawDebugHelpers)
+	{
+		DrawDebugLine(GetWorld(), Start, HitResult.Location, FColor::Blue);
+		DrawDebugSolidBox(GetWorld(), HitResult.Location, FVector(20.0f), FColor::Blue);
+	}
+	if (HitResult.Actor.IsValid())
+	{
+		ATaflGamesPiece* HitPiece = Cast<ATaflGamesPiece>(HitResult.Actor.Get());
+		if (CurrentPieceFocus != HitPiece)
+		{
+			//if (!isPieceSelected)
+			//{
+			if (CurrentPieceFocus)
+			{
+				CurrentPieceFocus->Highlight(false);
+			}
+			if (HitPiece)
+			{
+				HitPiece->Highlight(true);
+			}
+			//}
+			CurrentPieceFocus = HitPiece;
+			SelectedPiece = CurrentPieceFocus;
+		}
+	}
+	else if (CurrentPieceFocus)
+	{
+		CurrentPieceFocus->Highlight(false);
+		CurrentPieceFocus = nullptr;
 	}
 }
 
@@ -91,34 +133,5 @@ void ATaflGamesPawn::TraceForBlock(const FVector& Start, const FVector& End, boo
 	{
 		CurrentBlockFocus->Highlight(false);
 		CurrentBlockFocus = nullptr;
-	}
-}
-
-void ATaflGamesPawn::TraceForPiece(const FVector& Start, const FVector& End, bool bDrawDebugHelpers)
-{
-	FHitResult HitResult;
-	GetWorld()->LineTraceSingleByChannel(HitResult, Start, End, ECC_Visibility);
-	if (bDrawDebugHelpers)
-	{
-		DrawDebugLine(GetWorld(), Start, HitResult.Location, FColor::Blue);
-		DrawDebugSolidBox(GetWorld(), HitResult.Location, FVector(20.0f), FColor::Blue);
-	}
-	if (HitResult.Actor.IsValid())
-	{
-		ATaflGamesPiece* HitPiece = Cast<ATaflGamesPiece>(HitResult.Actor.Get());
-		if (CurrentPieceFocus != HitPiece)
-		{
-			CurrentPieceFocus->Highlight(false);
-		}
-		if (HitPiece)
-		{
-			HitPiece->Highlight(true);
-		}
-		CurrentPieceFocus = HitPiece;
-	}
-	else if (CurrentPieceFocus)
-	{
-		CurrentPieceFocus->Highlight(false);
-		CurrentPieceFocus = nullptr;
 	}
 }

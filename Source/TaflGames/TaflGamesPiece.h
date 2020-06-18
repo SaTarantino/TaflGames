@@ -1,6 +1,7 @@
 #pragma once
 
 #include "CoreMinimal.h"
+#include "TaflGamesPawn.h"
 #include "GameFramework/Actor.h"
 #include "TaflGamesPiece.generated.h"
 
@@ -22,16 +23,28 @@ public:
 	bool bIsActive;
 
 	/* Pointer to the base color used on the Attacking Pieces */
-	UPROPERTY()
-	class UMaterial* M_Wood_Oak;
+	/*UPROPERTY()
+	class UMaterial* M_Wood_Oak;*/
 
 	/* Pointer to the white material used on the focussed block */
 	UPROPERTY()
-	class UMaterialInstance* BaseMaterial;
+	class UMaterial* BaseMaterial;
+
+	/* Pointer to the color used on the select */
+	UPROPERTY()		
+	class UMaterialInstance* BlueMaterial;
+
+	UPROPERTY()
+	class UMaterialInstance* OrangeMaterial;
 
 	UPROPERTY()
 	class ATaflGamesBlockGrid* OwningGrid;
 	//class ATaflGamesBlock* OwningBlock;
+
+	UPROPERTY()
+	class ATaflGamesPawn* PlayerPawn;
+
+public:
 
 	UFUNCTION()
 	void PiaceClicked(UPrimitiveComponent* ClickedComp, FKey ButtonClicked);

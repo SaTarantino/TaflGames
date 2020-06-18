@@ -61,17 +61,16 @@ void ATaflGamesBlock::HandleClicked()
 		// Change material
 		BlockMesh->SetMaterial(0, BlueMaterial);
 
-		//// Tell the Grid
-		//if (OwningGrid != nullptr)
-		//{
-		//	OwningGrid->AddScore();
-		//}
+		// Tell the Grid
+		/*if (OwningGrid != nullptr)
+		{
+			OwningGrid->AddScore();
+		}*/
 	}
 }
 
 void ATaflGamesBlock::Highlight(bool bOn)
 {
-	// Do not highlight if the block has already been activated.
 	if (bIsActive)
 	{
 		return;
