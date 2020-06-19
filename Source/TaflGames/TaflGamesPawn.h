@@ -24,6 +24,8 @@ public:
 public:
 	bool isPieceSelected;
 
+	UPROPERTY(EditInstanceOnly, BlueprintReadWrite)
+	class ATaflGamesPiece* SelectedPiece;
 protected:
 	void TriggerClick();
 	void ReleaseClick();
@@ -35,10 +37,9 @@ protected:
 
 	UPROPERTY(EditInstanceOnly, BlueprintReadWrite)
 	class ATaflGamesPiece* CurrentPieceFocus;
-
-	UPROPERTY(EditInstanceOnly, BlueprintReadWrite)
-	class ATaflGamesPiece* SelectedPiece;
+	
 
 public:
 	FORCEINLINE bool getIsPieceSelected() { return isPieceSelected; }
+	FORCEINLINE class ATaflGamesPiece* getSelectedPiece() { return SelectedPiece; }
 };

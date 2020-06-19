@@ -58,10 +58,10 @@ void ATaflGamesPawn::CalcCamera(float DeltaTime, struct FMinimalViewInfo& OutRes
 
 void ATaflGamesPawn::TriggerClick()
 {
-	if (CurrentPieceFocus)
+	/*if (CurrentPieceFocus)
 	{
 		CurrentPieceFocus->HandleClicked();
-	}
+	}*/
 }
 
 void ATaflGamesPawn::ReleaseClick()
@@ -94,7 +94,7 @@ void ATaflGamesPawn::TraceForPiece(const FVector& Start, const FVector& End, boo
 			}
 			//}
 			CurrentPieceFocus = HitPiece;
-			SelectedPiece = CurrentPieceFocus;
+			//SelectedPiece = CurrentPieceFocus;
 		}
 	}
 	else if (CurrentPieceFocus)

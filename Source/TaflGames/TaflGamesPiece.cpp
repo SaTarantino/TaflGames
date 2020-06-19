@@ -48,14 +48,40 @@ ATaflGamesPiece::ATaflGamesPiece()
 
 void ATaflGamesPiece::PiaceClicked(UPrimitiveComponent* ClickedComp, FKey ButtonClicked)
 {
-	
 	if (PlayerPawn)
 	{
-		//if (PlayerPawn->getIsPieceSelected() == false)
-		//{
+		if (!PlayerPawn->SelectedPiece)
+		{
 			HandleClicked();
-			PlayerPawn->isPieceSelected = true;
-		//}
+			PlayerPawn->SelectedPiece = this;
+			/*if (PlayerPawn->SelectedPiece != this)
+			{
+				PlayerPawn->SelectedPiece = this;
+				HandleClicked();
+			}
+			else
+			{
+				HandleClicked();
+				PlayerPawn->SelectedPiece = nullptr;
+			}*/
+		}
+		else if (PlayerPawn->SelectedPiece)
+		{
+			if (PlayerPawn->SelectedPiece != this)
+			{
+				PlayerPawn->SelectedPiece->HandleClicked();
+				PlayerPawn->SelectedPiece = this;
+				HandleClicked();
+			}
+			else
+			{
+				HandleClicked();
+				PlayerPawn->SelectedPiece = nullptr;
+			}
+			/*PlayerPawn->SelectedPiece->HandleClicked();
+			PlayerPawn->SelectedPiece = this;
+			HandleClicked();*/
+		}
 	}
 }
 
@@ -67,7 +93,7 @@ void ATaflGamesPiece::HandleClicked()
 
 		PieceMesh->SetMaterial(0, OrangeMaterial);
 	}
-	else if (bIsActive)
+	else //if (bIsActive)
 	{
 		bIsActive = false;
 
@@ -81,15 +107,31 @@ void ATaflGamesPiece::Highlight(bool isActive)
 	// Good for debugging, not for the actual game.
 	if (bIsActive)
 	{
-		return;
-	}
-
-	if (isActive)
-	{
-		PieceMesh->SetMaterial(0, BaseMaterial);
+		//return;
+		if (isActive)
+		{
+			PieceMesh->SetMaterial(0, BaseMaterial);
+		}
+		else
+		{
+			PieceMesh->SetMaterial(0, OrangeMaterial);
+		}
 	}
 	else
 	{
-		PieceMesh->SetMaterial(0, BlueMaterial);
+		if (isActive)
+		{
+			PieceMesh->SetMaterial(0, BaseMaterial);
+		}
+		else
+		{
+			PieceMesh->SetMaterial(0, BlueMaterial);
+		}
 	}
+	
+}
+
+void ATaflGamesPiece::ResetMaterial()
+{
+	PieceMesh->SetMaterial(0, BlueMaterial);
 }
