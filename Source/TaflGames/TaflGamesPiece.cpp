@@ -50,37 +50,41 @@ void ATaflGamesPiece::PiaceClicked(UPrimitiveComponent* ClickedComp, FKey Button
 {
 	if (PlayerPawn)
 	{
+		/* If there is no Piece selected: */
 		if (!PlayerPawn->SelectedPiece)
 		{
+			/* 
+				Call HandleClicked function in order to select the pice,
+				then save this piece as the Selected Piece.
+			*/
 			HandleClicked();
 			PlayerPawn->SelectedPiece = this;
-			/*if (PlayerPawn->SelectedPiece != this)
-			{
-				PlayerPawn->SelectedPiece = this;
-				HandleClicked();
-			}
-			else
-			{
-				HandleClicked();
-				PlayerPawn->SelectedPiece = nullptr;
-			}*/
 		}
+		/* If there is a pice selected: */
 		else if (PlayerPawn->SelectedPiece)
 		{
+			/* If the selected piece IS DIFFERENT to this piece (the piece just selected): */
 			if (PlayerPawn->SelectedPiece != this)
 			{
+				/* 
+					Call HandleClicked function to the saved SelectedPiece in order to deselect it,
+					then set the piece just clicked as the SelectedPiece,
+					and then call the HandleClicked function in order to select it.
+				*/
 				PlayerPawn->SelectedPiece->HandleClicked();
 				PlayerPawn->SelectedPiece = this;
 				HandleClicked();
 			}
+			/* Else if the selected pice IS THE SAME to this piece (the piece just selected): */
 			else
 			{
+				/*
+					Call the HandleCliked function in order to deselect this piece,
+					save Selected Piece as a null pointer (put it in the garbage collector).
+				*/
 				HandleClicked();
 				PlayerPawn->SelectedPiece = nullptr;
 			}
-			/*PlayerPawn->SelectedPiece->HandleClicked();
-			PlayerPawn->SelectedPiece = this;
-			HandleClicked();*/
 		}
 	}
 }
@@ -93,7 +97,7 @@ void ATaflGamesPiece::HandleClicked()
 
 		PieceMesh->SetMaterial(0, OrangeMaterial);
 	}
-	else //if (bIsActive)
+	else
 	{
 		bIsActive = false;
 
@@ -103,11 +107,8 @@ void ATaflGamesPiece::HandleClicked()
 
 void ATaflGamesPiece::Highlight(bool isActive)
 {
-	// Do not highlight is the piece is active (is been clicked).
-	// Good for debugging, not for the actual game.
 	if (bIsActive)
 	{
-		//return;
 		if (isActive)
 		{
 			PieceMesh->SetMaterial(0, BaseMaterial);
@@ -129,9 +130,4 @@ void ATaflGamesPiece::Highlight(bool isActive)
 		}
 	}
 	
-}
-
-void ATaflGamesPiece::ResetMaterial()
-{
-	PieceMesh->SetMaterial(0, BlueMaterial);
 }

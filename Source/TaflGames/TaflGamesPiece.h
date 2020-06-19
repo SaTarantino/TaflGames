@@ -53,8 +53,6 @@ public:
 
 	void Highlight(bool isActive);
 
-	void ResetMaterial();
-
 public:
 	FORCEINLINE class USceneComponent* GetPieceRoot() const { return PieceRoot; }
 	FORCEINLINE class UStaticMeshComponent* GetPieceMesh() const { return PieceMesh; }
