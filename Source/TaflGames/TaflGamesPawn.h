@@ -26,7 +26,9 @@ public:
 
 	UPROPERTY(EditInstanceOnly, BlueprintReadWrite)
 	class ATaflGamesPiece* SelectedPiece;
+
 protected:
+
 	void TriggerClick();
 	void ReleaseClick();
 	void TraceForBlock(const FVector& Start, const FVector& End, bool bDrawDebugHelpers);
@@ -37,7 +39,6 @@ protected:
 
 	UPROPERTY(EditInstanceOnly, BlueprintReadWrite)
 	class ATaflGamesPiece* CurrentPieceFocus;
-	
 
 public:
 	FORCEINLINE bool getIsPieceSelected() { return isPieceSelected; }

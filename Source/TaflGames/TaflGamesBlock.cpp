@@ -4,6 +4,7 @@
 #include "Components/StaticMeshComponent.h"
 #include "Engine/StaticMesh.h"
 #include "Materials/MaterialInstance.h"
+#include "Kismet/GameplayStatics.h"
 
 ATaflGamesBlock::ATaflGamesBlock()
 {
@@ -14,13 +15,11 @@ ATaflGamesBlock::ATaflGamesBlock()
 		ConstructorHelpers::FObjectFinderOptional<UMaterial> BaseMaterial;
 		ConstructorHelpers::FObjectFinderOptional<UMaterialInstance> BlueMaterial;
 		ConstructorHelpers::FObjectFinderOptional<UMaterialInstance> OrangeMaterial;
-		//ConstructorHelpers::FObjectFinderOptional<UMaterialInstance> M_Wood_Oak;
 		FConstructorStatics()
 			: PlaneMesh(TEXT("/Game/Puzzle/Meshes/PuzzleCube.PuzzleCube"))
 			, BaseMaterial(TEXT("/Game/Puzzle/Meshes/BaseMaterial.BaseMaterial"))
 			, OrangeMaterial(TEXT("/Game/Puzzle/Meshes/OrangeMaterial.OrangeMaterial"))
 			, BlueMaterial(TEXT("/Game/Puzzle/Meshes/BlueMaterial.BlueMaterial"))
-			//, M_Wood_Oak(TEXT("/Game/Puzzle/Meshes/M_Wood_Oak.M_Wood_Oak"))
 		{
 		}
 	};
@@ -43,7 +42,8 @@ ATaflGamesBlock::ATaflGamesBlock()
 	BaseMaterial = ConstructorStatics.BaseMaterial.Get();
 	OrangeMaterial = ConstructorStatics.OrangeMaterial.Get();
 	BlueMaterial = ConstructorStatics.BlueMaterial.Get();
-	//M_Wood_Oak = ConstructorStatics.M_Wood_Oak.Get();
+
+	PlayerPawn = Cast<ATaflGamesPawn>(UGameplayStatics::GetPlayerPawn(this, 0));
 }
 
 void ATaflGamesBlock::BlockClicked(UPrimitiveComponent* ClickedComp, FKey ButtonClicked)
@@ -54,34 +54,35 @@ void ATaflGamesBlock::BlockClicked(UPrimitiveComponent* ClickedComp, FKey Button
 void ATaflGamesBlock::HandleClicked()
 {
 	// Check we are not already active
-	if (!bIsActive)
-	{
-		bIsActive = true;
+	//if (!bIsActive)
+	//{
+	//	bIsActive = true;
 
-		// Change material
-		BlockMesh->SetMaterial(0, BlueMaterial);
+	//	// Change material
+	//	BlockMesh->SetMaterial(0, BlueMaterial);
 
-		// Tell the Grid
-		/*if (OwningGrid != nullptr)
-		{
-			OwningGrid->AddScore();
-		}*/
-	}
+	//	// Tell the Grid
+	//	/*if (OwningGrid != nullptr)
+	//	{
+	//		OwningGrid->AddScore();
+	//	}*/
+	//}
 }
 
 void ATaflGamesBlock::Highlight(bool bOn)
 {
-	if (bIsActive)
+	if (PlayerPawn)
 	{
-		return;
-	}
-
-	if (bOn)
-	{
-		BlockMesh->SetMaterial(0, BaseMaterial);
-	}
-	else
-	{
-		BlockMesh->SetMaterial(0, OrangeMaterial);
+		if (PlayerPawn->SelectedPiece)
+		{
+			if (bOn)
+			{
+				BlockMesh->SetMaterial(0, BaseMaterial);
+			}
+			else
+			{
+				BlockMesh->SetMaterial(0, OrangeMaterial);
+			}
+		}
 	}
 }

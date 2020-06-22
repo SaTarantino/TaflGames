@@ -5,6 +5,10 @@
 #include "GameFramework/Actor.h"
 #include "TaflGamesPiece.generated.h"
 
+/*
+
+*/
+
 UCLASS()
 class TAFLGAMES_API ATaflGamesPiece : public AActor
 {
@@ -17,14 +21,9 @@ class TAFLGAMES_API ATaflGamesPiece : public AActor
 	class UStaticMeshComponent* PieceMesh;
 
 public:
-	// Sets default values for this actor's properties
 	ATaflGamesPiece();
 
 	bool bIsActive;
-
-	/* Pointer to the base color used on the Attacking Pieces */
-	/*UPROPERTY()
-	class UMaterial* M_Wood_Oak;*/
 
 	/* Pointer to the white material used on the focussed block */
 	UPROPERTY()
@@ -39,13 +38,11 @@ public:
 
 	UPROPERTY()
 	class ATaflGamesBlockGrid* OwningGrid;
-	//class ATaflGamesBlock* OwningBlock;
 
 	UPROPERTY()
 	class ATaflGamesPawn* PlayerPawn;
 
 public:
-
 	UFUNCTION()
 	void PiaceClicked(UPrimitiveComponent* ClickedComp, FKey ButtonClicked);
 

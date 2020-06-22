@@ -1,10 +1,14 @@
 #pragma once
 
 #include "CoreMinimal.h"
+#include "TaflGamesPawn.h"
 #include "GameFramework/Actor.h"
 #include "TaflGamesBlock.generated.h"
 
-/** A block that can be clicked */
+/*
+
+*/
+
 UCLASS(minimalapi)
 class ATaflGamesBlock : public AActor
 {
@@ -21,15 +25,12 @@ class ATaflGamesBlock : public AActor
 public:
 	ATaflGamesBlock();
 
-	/** Are we currently active? */
+	/** Check if is active */
 	bool bIsActive;
 
 	/** Pointer to white material used on the focused block */
 	UPROPERTY()
 	class UMaterial* BaseMaterial;
-
-	/*UPROPERTY()
-	class UMaterialInstance* M_Wood_Oak;*/
 
 	UPROPERTY()
 	class UMaterialInstance* OrangeMaterial;
@@ -41,6 +42,10 @@ public:
 	UPROPERTY()
 	class ATaflGamesBlockGrid* OwningGrid;
 
+	UPROPERTY()
+	class ATaflGamesPawn* PlayerPawn;
+
+public:
 	/** Handle the block being clicked */
 	UFUNCTION()
 	void BlockClicked(UPrimitiveComponent* ClickedComp, FKey ButtonClicked);
