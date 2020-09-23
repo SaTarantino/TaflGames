@@ -3,6 +3,7 @@
 #include "UObject/ConstructorHelpers.h"
 #include "Components/StaticMeshComponent.h"
 #include "Engine/StaticMesh.h"
+#include "Engine/Engine.h"
 #include "Materials/MaterialInstance.h"
 #include "Kismet/GameplayStatics.h"
 
@@ -78,11 +79,40 @@ void ATaflGamesBlock::Highlight(bool bOn)
 			if (bOn)
 			{
 				BlockMesh->SetMaterial(0, BaseMaterial);
+				//GEngine->AddOnScreenDebugMessage(-1, 1.f, FColor::Red, FString::Printf(TEXT("column: %f"), this->column));
+				//GEngine->AddOnScreenDebugMessage(-1, 1.f, FColor::Blue, FString::Printf(row));
+
 			}
 			else
 			{
 				BlockMesh->SetMaterial(0, OrangeMaterial);
 			}
 		}
+	}
+}
+
+void ATaflGamesBlock::SetRowColumn(int countRow, int countColumn, int size)
+{
+	// set the row
+	if (countColumn != size)
+	{
+		row = countRow;
+	}
+	else
+	{
+		row = countRow + 1;
+		countRow++;
+	}
+
+	// set the column
+	if (countColumn != size)
+	{
+		column = countColumn;
+		countColumn++;
+	}
+	else
+	{
+		column = countColumn;
+		countColumn = 1;
 	}
 }

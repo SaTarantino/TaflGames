@@ -129,5 +129,4 @@ void ATaflGamesPiece::Highlight(bool isActive)
 			PieceMesh->SetMaterial(0, BlueMaterial);
 		}
 	}
-	
 }

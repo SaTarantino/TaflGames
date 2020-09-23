@@ -4,6 +4,7 @@
 #include "TaflGamesGameMode.h"
 #include "Components/TextRenderComponent.h"
 #include "Engine/World.h"
+#include "UObject/Object.h"
 
 #define LOCTEXT_NAMESPACE "PuzzleBlockGrid"
 
@@ -31,6 +32,10 @@ void ATaflGamesBlockGrid::BeginPlay()
 
 	ATaflGamesGameMode* GameMode = Cast<ATaflGamesGameMode>(GetWorld()->GetAuthGameMode());
 	int index = -1;
+
+	int countRow = 1;
+	int countColumn = 1;
+	
 	// Number of blocks
 	const int32 NumBlocks = Size * Size;
 	// Loop to spawn each block
@@ -41,9 +46,10 @@ void ATaflGamesBlockGrid::BeginPlay()
 
 		// Make position vector, offset from Grid location
 		const FVector BlockLocation = FVector(XOffset, YOffset, 0.f) + GetActorLocation();
-
+		
 		// Spawn a block
 		ATaflGamesBlock* NewBlock = GetWorld()->SpawnActor<ATaflGamesBlock>(BlockLocation, FRotator(0, 0, 0));
+		//NewBlock->SetRowColumn(countRow, countColumn, Size);
 		index++;
 		
 		// If the index is in the array of the spawn, spawn a pice in that blox.

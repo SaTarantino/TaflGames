@@ -28,7 +28,7 @@ public:
 	/** Spacing of blocks */
 	UPROPERTY(Category = Grid, EditAnywhere, BlueprintReadOnly)
 	float BlockSpacing;
-
+	
 protected:
 	// Begin AActor interface
 	virtual void BeginPlay() override;

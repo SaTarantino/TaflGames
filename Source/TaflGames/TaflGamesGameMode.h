@@ -12,6 +12,26 @@ class ATaflGamesGameMode : public AGameModeBase
 
 public:
 	ATaflGamesGameMode();
-	ATaflGamesGameMode* GM;
+
+	/*	
+		Tablut was the Sápmi tafl variant played on a 9x9 board,
+		with a king and eight defenders against sixteen attackers.
+		
+		O O O X X X O O O
+		O O O O X O O O O
+		O O O O V O O O O
+		X O O O V O O O X
+		X X V V K V V X X
+		X O O O V O O O X
+		O O O O V O O O O
+		O O O O X O O O O
+		O O O X X X O O O
+
+		O = empty blocks
+		X = attackers
+		V = defenders
+		K = king
+	*/
+	ATaflGamesGameMode* Tablut;
 	TArray<int>* spawn = new TArray<int>;
 };

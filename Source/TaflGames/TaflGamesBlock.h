@@ -3,6 +3,7 @@
 #include "CoreMinimal.h"
 #include "TaflGamesPawn.h"
 #include "GameFramework/Actor.h"
+
 #include "TaflGamesBlock.generated.h"
 
 /*
@@ -27,6 +28,12 @@ public:
 
 	/** Check if is active */
 	bool bIsActive;
+
+	UPROPERTY(VisibleAnywhere, Category = Position)
+	int column = 1;
+
+	UPROPERTY(VisibleAnywhere, Category = Position)
+	int row = 2;
 
 	/** Pointer to white material used on the focused block */
 	UPROPERTY()
@@ -53,6 +60,8 @@ public:
 	void HandleClicked();
 
 	void Highlight(bool bOn);
+
+	void SetRowColumn(int countRow, int countColumn, int size);
 
 public:
 	/** Returns DummyRoot subobject **/
