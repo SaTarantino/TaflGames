@@ -31,11 +31,11 @@ void ATaflGamesBlockGrid::BeginPlay()
 	Super::BeginPlay();
 
 	ATaflGamesGameMode* GameMode = Cast<ATaflGamesGameMode>(GetWorld()->GetAuthGameMode());
-	int index = -1;
 
+	int index = -1;
 	int countRow = 1;
 	int countColumn = 1;
-	
+
 	// Number of blocks
 	const int32 NumBlocks = Size * Size;
 	// Loop to spawn each block
@@ -49,13 +49,42 @@ void ATaflGamesBlockGrid::BeginPlay()
 		
 		// Spawn a block
 		ATaflGamesBlock* NewBlock = GetWorld()->SpawnActor<ATaflGamesBlock>(BlockLocation, FRotator(0, 0, 0));
-		//NewBlock->SetRowColumn(countRow, countColumn, Size);
-		index++;
+
+
+		// The follow code set the row and the column for each block.
+		// Set the Row
+		if (countColumn != Size)
+		{
+			NewBlock->row = countRow;
+		}
+		else
+		{
+			NewBlock->row = countRow;
+			countRow++;
+		}
+		// Set the column
+		if (countColumn != Size)
+		{
+			NewBlock->column = countColumn;
+			countColumn++;
+		}
+		else
+		{
+			NewBlock->column = countColumn;
+			countColumn = 1;
+		}
 		
+		index++;
+
+
 		// If the index is in the array of the spawn, spawn a pice in that blox.
 		if (GameMode->spawn->Contains(index))
 		{
 			ATaflGamesPiece* NewPiece = GetWorld()->SpawnActor<ATaflGamesPiece>(BlockLocation, FRotator(0, 0, 0));
+			if (NewPiece != nullptr && NewBlock != nullptr)
+			{
+				NewPiece->OwningBlock = NewBlock;
+			}
 		}
 		
 		// Tell the block about its owner

@@ -80,12 +80,16 @@ void ATaflGamesPiece::PiaceClicked(UPrimitiveComponent* ClickedComp, FKey Button
 			{
 				/*
 					Call the HandleCliked function in order to deselect this piece,
-					save Selected Piece as a null pointer (put it in the garbage collector).
+					save Selected Piece as a null pointer.
 				*/
 				HandleClicked();
 				PlayerPawn->SelectedPiece = nullptr;
 			}
 		}
+	}
+	else
+	{
+		return;
 	}
 }
 

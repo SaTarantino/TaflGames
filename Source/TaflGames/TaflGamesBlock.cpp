@@ -49,25 +49,56 @@ ATaflGamesBlock::ATaflGamesBlock()
 
 void ATaflGamesBlock::BlockClicked(UPrimitiveComponent* ClickedComp, FKey ButtonClicked)
 {
+	if (PlayerPawn)
+	{
+		PlayerPawn->SelectedBlock = this;
+	}
+	else
+	{
+		return;
+	}
+
 	HandleClicked();
 }
 
 void ATaflGamesBlock::HandleClicked()
 {
-	// Check we are not already active
-	//if (!bIsActive)
-	//{
-	//	bIsActive = true;
+	if (!PlayerPawn->SelectedPiece->GetOwingBlock())
+	{
+		return;
+	}
+	else
+	{
+		int pieceColumn = PlayerPawn->SelectedPiece->GetOwingBlock()->column;
+		int pieceRow = PlayerPawn->SelectedPiece->GetOwingBlock()->row;
 
-	//	// Change material
-	//	BlockMesh->SetMaterial(0, BlueMaterial);
+		if (pieceColumn == column || pieceRow == row)
+		{
+			//GEngine->AddOnScreenDebugMessage(-1, 2.f, FColor::Orange, FString::Printf(TEXT("Same Column/Row")));
 
-	//	// Tell the Grid
-	//	/*if (OwningGrid != nullptr)
-	//	{
-	//		OwningGrid->AddScore();
-	//	}*/
-	//}
+			// Get the location of the new block
+			const FVector NewLocation = PlayerPawn->SelectedBlock->GetActorLocation();
+			
+			// Move the Piece in the new location
+			PlayerPawn->SelectedPiece->SetActorLocation(NewLocation);
+
+			// TODO:
+			// 1: Check if there are other pieces in the way
+			// if not:
+			// 2: Move the piece
+			// 3: Set the new column and row of the piece
+			// else: return
+		}
+		else
+		{
+			return;
+		}
+
+		/*GEngine->AddOnScreenDebugMessage(-1, 2.f, FColor::Cyan, FString::Printf(TEXT("Piece Column: %i"), pieceColumn));
+		GEngine->AddOnScreenDebugMessage(-1, 2.f, FColor::Yellow, FString::Printf(TEXT("Piece Row: %i"), pieceRow));
+		GEngine->AddOnScreenDebugMessage(-1, 2.f, FColor::Red, FString::Printf(TEXT("Column: %i"), column));
+		GEngine->AddOnScreenDebugMessage(-1, 2.f, FColor::Blue, FString::Printf(TEXT("Row: %i"), row));*/
+	}
 }
 
 void ATaflGamesBlock::Highlight(bool bOn)
@@ -79,8 +110,8 @@ void ATaflGamesBlock::Highlight(bool bOn)
 			if (bOn)
 			{
 				BlockMesh->SetMaterial(0, BaseMaterial);
-				//GEngine->AddOnScreenDebugMessage(-1, 1.f, FColor::Red, FString::Printf(TEXT("column: %f"), this->column));
-				//GEngine->AddOnScreenDebugMessage(-1, 1.f, FColor::Blue, FString::Printf(row));
+				//GEngine->AddOnScreenDebugMessage(-1, 1.f, FColor::Red, FString::Printf(TEXT("Column: %i"), column));
+				//GEngine->AddOnScreenDebugMessage(-1, 1.f, FColor::Blue, FString::Printf(TEXT("Row: %i"), row));
 
 			}
 			else
@@ -91,28 +122,31 @@ void ATaflGamesBlock::Highlight(bool bOn)
 	}
 }
 
-void ATaflGamesBlock::SetRowColumn(int countRow, int countColumn, int size)
-{
-	// set the row
-	if (countColumn != size)
-	{
-		row = countRow;
-	}
-	else
-	{
-		row = countRow + 1;
-		countRow++;
-	}
-
-	// set the column
-	if (countColumn != size)
-	{
-		column = countColumn;
-		countColumn++;
-	}
-	else
-	{
-		column = countColumn;
-		countColumn = 1;
-	}
-}
+// This function should be call to set the row and the column of the block.
+// If called it dosen't work, so I implemented the code directly in the Begin Play function in BlockGrid.
+// That works quite good and shold not give any problem at all.
+//void ATaflGamesBlock::SetRowAndColumn(int countRow, int countColumn, int size)
+//{
+//	// set the row
+//	if (countColumn != size)
+//	{
+//		row = countRow;
+//	}
+//	else
+//	{
+//		row = countRow;
+//		countRow++;
+//	}
+//
+//	// set the column
+//	if (countColumn != size)
+//	{
+//		column = countColumn;
+//		countColumn++;
+//	}
+//	else
+//	{
+//		column = countColumn;
+//		countColumn = 1;
+//	}
+//}

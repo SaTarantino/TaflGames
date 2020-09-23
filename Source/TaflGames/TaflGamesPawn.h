@@ -22,10 +22,14 @@ public:
 	virtual void CalcCamera(float DeltaTime, struct FMinimalViewInfo& OutResult) override;
 
 public:
-	bool isPieceSelected;
 
+	bool isPieceSelected;
+	
 	UPROPERTY(EditInstanceOnly, BlueprintReadWrite)
 	class ATaflGamesPiece* SelectedPiece;
+
+	UPROPERTY(EditInstanceOnly, BlueprintReadWrite)
+	class ATaflGamesBlock* SelectedBlock;
 
 protected:
 
@@ -43,4 +47,5 @@ protected:
 public:
 	FORCEINLINE bool getIsPieceSelected() { return isPieceSelected; }
 	FORCEINLINE class ATaflGamesPiece* getSelectedPiece() { return SelectedPiece; }
+	FORCEINLINE class ATaflGamesBlock* getSelectedBlock() { return SelectedBlock; }
 };

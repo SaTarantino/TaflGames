@@ -82,8 +82,6 @@ void ATaflGamesPawn::TraceForPiece(const FVector& Start, const FVector& End, boo
 		ATaflGamesPiece* HitPiece = Cast<ATaflGamesPiece>(HitResult.Actor.Get());
 		if (CurrentPieceFocus != HitPiece)
 		{
-			//if (!isPieceSelected)
-			//{
 			if (CurrentPieceFocus)
 			{
 				CurrentPieceFocus->Highlight(false);
@@ -92,9 +90,7 @@ void ATaflGamesPawn::TraceForPiece(const FVector& Start, const FVector& End, boo
 			{
 				HitPiece->Highlight(true);
 			}
-			//}
 			CurrentPieceFocus = HitPiece;
-			//SelectedPiece = CurrentPieceFocus;
 		}
 	}
 	else if (CurrentPieceFocus)

@@ -36,8 +36,11 @@ public:
 	UPROPERTY()
 	class UMaterialInstance* OrangeMaterial;
 
+	/*UPROPERTY()
+	class ATaflGamesBlockGrid* OwningGrid;*/
+
 	UPROPERTY()
-	class ATaflGamesBlockGrid* OwningGrid;
+	class ATaflGamesBlock* OwningBlock;
 
 	UPROPERTY()
 	class ATaflGamesPawn* PlayerPawn;
@@ -53,4 +56,5 @@ public:
 public:
 	FORCEINLINE class USceneComponent* GetPieceRoot() const { return PieceRoot; }
 	FORCEINLINE class UStaticMeshComponent* GetPieceMesh() const { return PieceMesh; }
+	FORCEINLINE class ATaflGamesBlock* GetOwingBlock() const { return OwningBlock; }
 };

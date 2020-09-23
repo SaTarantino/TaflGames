@@ -30,10 +30,10 @@ public:
 	bool bIsActive;
 
 	UPROPERTY(VisibleAnywhere, Category = Position)
-	int column = 1;
+	int column;
 
 	UPROPERTY(VisibleAnywhere, Category = Position)
-	int row = 2;
+	int row;
 
 	/** Pointer to white material used on the focused block */
 	UPROPERTY()
@@ -61,7 +61,7 @@ public:
 
 	void Highlight(bool bOn);
 
-	void SetRowColumn(int countRow, int countColumn, int size);
+	//void SetRowAndColumn(int countRow, int countColumn, int size);
 
 public:
 	/** Returns DummyRoot subobject **/
