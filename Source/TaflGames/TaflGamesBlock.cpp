@@ -45,20 +45,23 @@ ATaflGamesBlock::ATaflGamesBlock()
 	BlueMaterial = ConstructorStatics.BlueMaterial.Get();
 
 	PlayerPawn = Cast<ATaflGamesPawn>(UGameplayStatics::GetPlayerPawn(this, 0));
+	//TArray<int32> GameGrid = this->OwningGrid->getCoordinateArray();
 }
 
+// The block just clicked.
 void ATaflGamesBlock::BlockClicked(UPrimitiveComponent* ClickedComp, FKey ButtonClicked)
 {
-	if (PlayerPawn)
+	if (!this->bIsOccupied && PlayerPawn->SelectedPiece != nullptr)
 	{
 		PlayerPawn->SelectedBlock = this;
+		PlayerPawn->SelectedPiece->OwningBlock->bIsOccupied = false;
+
+		HandleClicked();
 	}
 	else
 	{
 		return;
 	}
-
-	HandleClicked();
 }
 
 void ATaflGamesBlock::HandleClicked()
@@ -71,33 +74,49 @@ void ATaflGamesBlock::HandleClicked()
 	{
 		int pieceColumn = PlayerPawn->SelectedPiece->GetOwingBlock()->column;
 		int pieceRow = PlayerPawn->SelectedPiece->GetOwingBlock()->row;
+		int selectedBlockColumn = PlayerPawn->SelectedBlock->column;
+		int selectedBlockRow = PlayerPawn->SelectedBlock->row;
+
+		/*if (bIsOccupied == false)
+			return;*/
 
 		if (pieceColumn == column || pieceRow == row)
 		{
-			//GEngine->AddOnScreenDebugMessage(-1, 2.f, FColor::Orange, FString::Printf(TEXT("Same Column/Row")));
-
 			// Get the location of the new block
 			const FVector NewLocation = PlayerPawn->SelectedBlock->GetActorLocation();
+
+			// TODO:
+			// 1: Check if there are other pieces in the way
+
+
+			//// Check if there is a piece in the same Column
+			//if (pieceColumn == selectedBlockColumn)
+			//{
+			//	if (pieceColumn < selectedBlockColumn)
+			//	{
+			//		for (int i = (selectedBlockColumn - pieceColumn) - 1; i = 0; i--)
+			//		{
+			//			if ()
+			//		}
+			//	}
+			//}
+			//// Checl of tjere is a pice in the same Row
+			//else
+			//{
+			//	
+			//}
 			
 			// Move the Piece in the new location
 			PlayerPawn->SelectedPiece->SetActorLocation(NewLocation);
 
-			// TODO:
-			// 1: Check if there are other pieces in the way
-			// if not:
-			// 2: Move the piece
-			// 3: Set the new column and row of the piece
-			// else: return
+			PlayerPawn->SelectedPiece->OwningBlock = PlayerPawn->SelectedBlock;
+			PlayerPawn->SelectedPiece->OwningBlock->bIsOccupied = true;
+			PlayerPawn->SelectedBlock->bIsOccupied = true;
 		}
 		else
 		{
 			return;
 		}
-
-		/*GEngine->AddOnScreenDebugMessage(-1, 2.f, FColor::Cyan, FString::Printf(TEXT("Piece Column: %i"), pieceColumn));
-		GEngine->AddOnScreenDebugMessage(-1, 2.f, FColor::Yellow, FString::Printf(TEXT("Piece Row: %i"), pieceRow));
-		GEngine->AddOnScreenDebugMessage(-1, 2.f, FColor::Red, FString::Printf(TEXT("Column: %i"), column));
-		GEngine->AddOnScreenDebugMessage(-1, 2.f, FColor::Blue, FString::Printf(TEXT("Row: %i"), row));*/
 	}
 }
 

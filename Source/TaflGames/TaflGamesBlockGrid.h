@@ -28,6 +28,8 @@ public:
 	/** Spacing of blocks */
 	UPROPERTY(Category = Grid, EditAnywhere, BlueprintReadOnly)
 	float BlockSpacing;
+
+	//TArray<int32> coordinateArray;
 	
 protected:
 	// Begin AActor interface
@@ -40,4 +42,6 @@ public:
 	FORCEINLINE class USceneComponent* GetDummyRoot() const { return DummyRoot; }
 	/** Returns ScoreText subobject **/
 	//FORCEINLINE class UTextRenderComponent* GetScoreText() const { return ScoreText; }
+
+	//FORCEINLINE TArray<int32> getCoordinateArray() const { return coordinateArray; }
 };

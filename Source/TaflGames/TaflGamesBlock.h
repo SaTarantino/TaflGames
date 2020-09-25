@@ -30,6 +30,9 @@ public:
 	bool bIsActive;
 
 	UPROPERTY(VisibleAnywhere, Category = Position)
+	bool bIsOccupied = false;
+
+	UPROPERTY(VisibleAnywhere, Category = Position)
 	int column;
 
 	UPROPERTY(VisibleAnywhere, Category = Position)

@@ -49,31 +49,36 @@ void ATaflGamesBlockGrid::BeginPlay()
 		
 		// Spawn a block
 		ATaflGamesBlock* NewBlock = GetWorld()->SpawnActor<ATaflGamesBlock>(BlockLocation, FRotator(0, 0, 0));
-
-
+		int c;
+		int r;
+		
 		// The follow code set the row and the column for each block.
 		// Set the Row
 		if (countColumn != Size)
 		{
 			NewBlock->row = countRow;
+			r = countRow;
 		}
 		else
 		{
 			NewBlock->row = countRow;
+			r = countRow;
 			countRow++;
 		}
 		// Set the column
 		if (countColumn != Size)
 		{
 			NewBlock->column = countColumn;
+			c = countColumn;
 			countColumn++;
 		}
 		else
 		{
 			NewBlock->column = countColumn;
+			c = countColumn;
 			countColumn = 1;
 		}
-		
+		//coordinateArray.Add((c, r));
 		index++;
 
 
@@ -84,6 +89,7 @@ void ATaflGamesBlockGrid::BeginPlay()
 			if (NewPiece != nullptr && NewBlock != nullptr)
 			{
 				NewPiece->OwningBlock = NewBlock;
+				NewBlock->bIsOccupied = true;
 			}
 		}
 		

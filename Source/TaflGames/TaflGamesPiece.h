@@ -39,7 +39,7 @@ public:
 	/*UPROPERTY()
 	class ATaflGamesBlockGrid* OwningGrid;*/
 
-	UPROPERTY()
+	UPROPERTY(VisibleAnywhere, Category = Position)
 	class ATaflGamesBlock* OwningBlock;
 
 	UPROPERTY()
