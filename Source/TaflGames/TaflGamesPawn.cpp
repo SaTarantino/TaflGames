@@ -84,18 +84,18 @@ void ATaflGamesPawn::TraceForPiece(const FVector& Start, const FVector& End, boo
 		{
 			if (CurrentPieceFocus)
 			{
-				CurrentPieceFocus->Highlight(false);
+				CurrentPieceFocus->HighlightPiece(false);
 			}
 			if (HitPiece)
 			{
-				HitPiece->Highlight(true);
+				HitPiece->HighlightPiece(true);
 			}
 			CurrentPieceFocus = HitPiece;
 		}
 	}
 	else if (CurrentPieceFocus)
 	{
-		CurrentPieceFocus->Highlight(false);
+		CurrentPieceFocus->HighlightPiece(false);
 		CurrentPieceFocus = nullptr;
 	}
 }
@@ -116,18 +116,18 @@ void ATaflGamesPawn::TraceForBlock(const FVector& Start, const FVector& End, boo
 		{
 			if (CurrentBlockFocus)
 			{
-				CurrentBlockFocus->Highlight(false);
+				CurrentBlockFocus->HighlightBlock(false);
 			}
 			if (HitBlock)
 			{
-				HitBlock->Highlight(true);
+				HitBlock->HighlightBlock(true);
 			}
 			CurrentBlockFocus = HitBlock;
 		}
 	}
 	else if (CurrentBlockFocus)
 	{
-		CurrentBlockFocus->Highlight(false);
+		CurrentBlockFocus->HighlightBlock(false);
 		CurrentBlockFocus = nullptr;
 	}
 }

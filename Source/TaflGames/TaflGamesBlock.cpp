@@ -112,6 +112,15 @@ void ATaflGamesBlock::HandleClicked()
 			PlayerPawn->SelectedPiece->OwningBlock = PlayerPawn->SelectedBlock;
 			PlayerPawn->SelectedPiece->OwningBlock->bIsOccupied = true;
 			PlayerPawn->SelectedBlock->bIsOccupied = true;
+
+			//this->HighlightBlock(false);
+			//PlayerPawn->SelectedPiece->HighlightPiece(false);
+			//PlayerPawn->SelectedPiece = nullptr;
+			
+			// Set the block and piece back to the their original color
+			this->HighlightBlock(false);
+			PlayerPawn->SelectedPiece->PieceClicked(PlayerPawn->SelectedPiece->GetPieceMesh(), FKey("LeftMouseClick"));
+			
 		}
 		else
 		{
@@ -120,7 +129,7 @@ void ATaflGamesBlock::HandleClicked()
 	}
 }
 
-void ATaflGamesBlock::Highlight(bool bOn)
+void ATaflGamesBlock::HighlightBlock(bool bOn)
 {
 	if (PlayerPawn)
 	{

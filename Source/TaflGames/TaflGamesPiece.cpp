@@ -36,7 +36,7 @@ ATaflGamesPiece::ATaflGamesPiece()
 	PieceMesh->SetRelativeLocation(FVector(0.f, 0.f, 25.f));
 	PieceMesh->SetMaterial(0, ConstructorStatics.BlueMaterial.Get());
 	PieceMesh->SetupAttachment(PieceRoot);
-	PieceMesh->OnClicked.AddDynamic(this, &ATaflGamesPiece::PiaceClicked);
+	PieceMesh->OnClicked.AddDynamic(this, &ATaflGamesPiece::PieceClicked);
 
 	// Save a pointer to the orange material.
 	BaseMaterial = ConstructorStatics.BaseMaterial.Get();
@@ -46,7 +46,7 @@ ATaflGamesPiece::ATaflGamesPiece()
 	PlayerPawn = Cast<ATaflGamesPawn>(UGameplayStatics::GetPlayerPawn(this, 0));
 }
 
-void ATaflGamesPiece::PiaceClicked(UPrimitiveComponent* ClickedComp, FKey ButtonClicked)
+void ATaflGamesPiece::PieceClicked(UPrimitiveComponent* ClickedComp, FKey ButtonClicked)
 {
 	if (PlayerPawn)
 	{
@@ -109,7 +109,7 @@ void ATaflGamesPiece::HandleClicked()
 	}
 }
 
-void ATaflGamesPiece::Highlight(bool isActive)
+void ATaflGamesPiece::HighlightPiece(bool isActive)
 {
 	if (bIsActive)
 	{

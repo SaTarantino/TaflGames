@@ -47,11 +47,11 @@ public:
 
 public:
 	UFUNCTION()
-	void PiaceClicked(UPrimitiveComponent* ClickedComp, FKey ButtonClicked);
+	void PieceClicked(UPrimitiveComponent* ClickedComp, FKey ButtonClicked);
 
 	void HandleClicked();
 
-	void Highlight(bool isActive);
+	void HighlightPiece(bool isActive);
 
 public:
 	FORCEINLINE class USceneComponent* GetPieceRoot() const { return PieceRoot; }

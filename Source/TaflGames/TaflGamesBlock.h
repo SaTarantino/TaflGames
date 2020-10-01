@@ -62,7 +62,7 @@ public:
 
 	void HandleClicked();
 
-	void Highlight(bool bOn);
+	void HighlightBlock(bool bOn);
 
 	//void SetRowAndColumn(int countRow, int countColumn, int size);
 
