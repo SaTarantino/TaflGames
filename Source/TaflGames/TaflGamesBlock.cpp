@@ -85,42 +85,42 @@ void ATaflGamesBlock::HandleClicked()
 			// Get the location of the new block
 			const FVector NewLocation = PlayerPawn->SelectedBlock->GetActorLocation();
 
+
+			/*GEngine->AddOnScreenDebugMessage(-1, 1.f, FColor::Blue,
+				FString::Printf(TEXT("%s"), checkColumn(pieceColumn, selectedBlockColumn)));
+			*/
+			//columnMove(pieceColumn, selectedBlockColumn, pieceRow)
+
+			//for (TObjectIterator<ATaflGamesBlockGrid> Grid; Grid; ++Grid)
+			//{
+			//	/*if (Grid->IsA(ATaflGamesBlockGrid::StaticClass))
+			//	{
+			//	}*/
+
+			//	if (Grid)
+			//	{
+			//		/*for (int i = 0; i < Grid->coordinateArray.Num(); i++)
+			//		{
+			//			
+			//		}*/
+			//	}
+			//}
+
 			// TODO:
 			// 1: Check if there are other pieces in the way
 
-
-			//// Check if there is a piece in the same Column
-			//if (pieceColumn == selectedBlockColumn)
-			//{
-			//	if (pieceColumn < selectedBlockColumn)
-			//	{
-			//		for (int i = (selectedBlockColumn - pieceColumn) - 1; i = 0; i--)
-			//		{
-			//			if ()
-			//		}
-			//	}
-			//}
-			//// Checl of tjere is a pice in the same Row
-			//else
-			//{
-			//	
-			//}
-			
 			// Move the Piece in the new location
 			PlayerPawn->SelectedPiece->SetActorLocation(NewLocation);
 
 			PlayerPawn->SelectedPiece->OwningBlock = PlayerPawn->SelectedBlock;
+			PlayerPawn->SelectedPiece->indexPiece = PlayerPawn->SelectedBlock->index;
 			PlayerPawn->SelectedPiece->OwningBlock->bIsOccupied = true;
 			PlayerPawn->SelectedBlock->bIsOccupied = true;
 
-			//this->HighlightBlock(false);
-			//PlayerPawn->SelectedPiece->HighlightPiece(false);
-			//PlayerPawn->SelectedPiece = nullptr;
-			
 			// Set the block and piece back to the their original color
 			this->HighlightBlock(false);
 			PlayerPawn->SelectedPiece->PieceClicked(PlayerPawn->SelectedPiece->GetPieceMesh(), FKey("LeftMouseClick"));
-			
+
 		}
 		else
 		{
@@ -150,31 +150,58 @@ void ATaflGamesBlock::HighlightBlock(bool bOn)
 	}
 }
 
-// This function should be call to set the row and the column of the block.
-// If called it dosen't work, so I implemented the code directly in the Begin Play function in BlockGrid.
-// That works quite good and shold not give any problem at all.
-//void ATaflGamesBlock::SetRowAndColumn(int countRow, int countColumn, int size)
+void ATaflGamesBlock::columnMove(int pieceColumn, int selectedBlockColumn, int pieceRow)
+{
+	if (pieceColumn < selectedBlockColumn)
+	{
+		/*for (int i = pieceColumn; i < selectedBlockColumn; i++)
+		{
+			GEngine->AddOnScreenDebugMessage(-1, 1.f, FColor::Blue,
+				FString::Printf(TEXT("Row: %i"), );
+		}*/
+
+		//checkColumn(pieceColumn, pieceRow);
+
+	}
+	/*else if (pieceColumn > selectedBlockColumn)
+	{
+
+	}*/
+}
+
+//bool ATaflGamesBlock::checkColumn(int column, int row)
 //{
-//	// set the row
-//	if (countColumn != size)
-//	{
-//		row = countRow;
-//	}
-//	else
-//	{
-//		row = countRow;
-//		countRow++;
-//	}
+//	//for (TObjectIterator<ATaflGamesBlockGrid> Grid; Grid; ++Grid)
+//	//{
+//	//	if (Grid)
+//	//	{
+//	//		for (TObjectIterator<ATaflGamesBlock> Block; Block; ++Block)
+//	//		{
+//	//			if (Block)
+//	//			{
+//	//				if (Block->index < PlayerPawn->SelectedPiece->OwningBlock->index)
+//	//				{
+//	//					if (Block->row != PlayerPawn->SelectedPiece->OwningBlock->row)
+//	//					{
+//	//						if
+//	//					}
+//	//				}
+//	//				// Move in the square above
+//	//				else if (Block->index > PlayerPawn->SelectedPiece->OwningBlock->index)
+//	//				{
 //
-//	// set the column
-//	if (countColumn != size)
+//	//				}
+//	//			}
+//	//		}
+//	//	}
+//	//}
+//	//return false;
+//
+//	// Verso Giu
+//	if (PlayerPawn->SelectedBlock->index < PlayerPawn->SelectedPiece->OwningBlock->index)
 //	{
-//		column = countColumn;
-//		countColumn++;
-//	}
-//	else
-//	{
-//		column = countColumn;
-//		countColumn = 1;
+//		int indexArrivo = PlayerPawn->SelectedBlock->index;
+//
+//		if ((PlayerPawn->SelectedPiece->indexPiece - 9))
 //	}
 //}

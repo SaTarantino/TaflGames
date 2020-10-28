@@ -38,6 +38,9 @@ public:
 	UPROPERTY(VisibleAnywhere, Category = Position)
 	int row;
 
+	UPROPERTY(VisibleAnywhere, Category = Position)
+	int index;
+
 	/** Pointer to white material used on the focused block */
 	UPROPERTY()
 	class UMaterial* BaseMaterial;
@@ -64,7 +67,9 @@ public:
 
 	void HighlightBlock(bool bOn);
 
-	//void SetRowAndColumn(int countRow, int countColumn, int size);
+	void columnMove(int pieceColumn, int selectedBlockColumn, int pieceRow);
+
+	bool checkColumn(int column, int row);
 
 public:
 	/** Returns DummyRoot subobject **/

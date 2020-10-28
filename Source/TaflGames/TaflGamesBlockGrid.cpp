@@ -49,33 +49,35 @@ void ATaflGamesBlockGrid::BeginPlay()
 		
 		// Spawn a block
 		ATaflGamesBlock* NewBlock = GetWorld()->SpawnActor<ATaflGamesBlock>(BlockLocation, FRotator(0, 0, 0));
-		int c;
-		int r;
+		NewBlock->index = BlockIndex;
+
+		//int c;
+		//int r;
 		
 		// The follow code set the row and the column for each block.
 		// Set the Row
 		if (countColumn != Size)
 		{
 			NewBlock->row = countRow;
-			r = countRow;
+			//r = countRow;
 		}
 		else
 		{
 			NewBlock->row = countRow;
-			r = countRow;
+			//r = countRow;
 			countRow++;
 		}
 		// Set the column
 		if (countColumn != Size)
 		{
 			NewBlock->column = countColumn;
-			c = countColumn;
+			//c = countColumn;
 			countColumn++;
 		}
 		else
 		{
 			NewBlock->column = countColumn;
-			c = countColumn;
+			//c = countColumn;
 			countColumn = 1;
 		}
 		//coordinateArray.Add((c, r));
@@ -89,6 +91,10 @@ void ATaflGamesBlockGrid::BeginPlay()
 			if (NewPiece != nullptr && NewBlock != nullptr)
 			{
 				NewPiece->OwningBlock = NewBlock;
+
+				GameMode->pieceArray.Add(NewPiece);
+
+				NewPiece->indexPiece = NewPiece->OwningBlock->index;
 				NewBlock->bIsOccupied = true;
 			}
 		}
@@ -102,3 +108,32 @@ void ATaflGamesBlockGrid::BeginPlay()
 }
 
 #undef LOCTEXT_NAMESPACE
+
+// This function should be call to set the row and the column of the block.
+// If called it dosen't work, so I implemented the code directly in the Begin Play function in BlockGrid.
+// That works quite good and shold not give any problem at all.
+//void ATaflGamesBlock::SetRowAndColumn(int countRow, int countColumn, int size)
+//{
+//	// set the row
+//	if (countColumn != size)
+//	{
+//		row = countRow;
+//	}
+//	else
+//	{
+//		row = countRow;
+//		countRow++;
+//	}
+//
+//	// set the column
+//	if (countColumn != size)
+//	{
+//		column = countColumn;
+//		countColumn++;
+//	}
+//	else
+//	{
+//		column = countColumn;
+//		countColumn = 1;
+//	}
+//}

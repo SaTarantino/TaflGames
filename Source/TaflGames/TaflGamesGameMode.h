@@ -2,6 +2,7 @@
 
 #include "CoreMinimal.h"
 #include "GameFramework/GameModeBase.h"
+#include "TaflGamesPiece.h"
 #include "TaflGamesGameMode.generated.h"
 
 /** GameMode class to specify pawn and playercontroller */
@@ -34,4 +35,5 @@ public:
 	*/
 	ATaflGamesGameMode* Tablut;
 	TArray<int>* spawn = new TArray<int>;
+	TArray<ATaflGamesPiece*> pieceArray;
 };

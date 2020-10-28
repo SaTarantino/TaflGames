@@ -25,6 +25,9 @@ public:
 
 	bool bIsActive;
 
+	UPROPERTY(VisibleAnywhere, Category = Index)
+	int indexPiece;
+
 	/* Pointer to the white material used on the focussed block */
 	UPROPERTY()
 	class UMaterial* BaseMaterial;
