@@ -50,7 +50,7 @@ void ATaflGamesBlockGrid::BeginPlay()
 		// Spawn a block
 		ATaflGamesBlock* NewBlock = GetWorld()->SpawnActor<ATaflGamesBlock>(BlockLocation, FRotator(0, 0, 0));
 		NewBlock->index = BlockIndex;
-
+		GameMode->blockArray.Add(NewBlock);
 		//int c;
 		//int r;
 		
@@ -105,6 +105,12 @@ void ATaflGamesBlockGrid::BeginPlay()
 			NewBlock->OwningGrid = this;
 		}
 	}
+
+	/*for (int32 i = 0; i < GameMode->pieceArray.Num(); i++)
+	{
+		GEngine->AddOnScreenDebugMessage(-1, 100.f, FColor::Red,
+			FString::Printf(TEXT("%i"), GameMode->pieceArray[i]->indexPiece));
+	}*/
 }
 
 #undef LOCTEXT_NAMESPACE

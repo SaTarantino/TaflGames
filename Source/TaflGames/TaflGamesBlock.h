@@ -69,7 +69,7 @@ public:
 
 	void columnMove(int pieceColumn, int selectedBlockColumn, int pieceRow);
 
-	bool checkColumn(int column, int row);
+	int moveUp();
 
 public:
 	/** Returns DummyRoot subobject **/
