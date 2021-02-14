@@ -87,27 +87,16 @@ void ATaflGamesBlock::HandleClicked()
 			ATaflGamesGameMode* GameMode = Cast<ATaflGamesGameMode>(GetWorld()->GetAuthGameMode());
 
 			int a = 0;
+			a = columnMove();
+			GEngine->AddOnScreenDebugMessage(-1, 1.5f, FColor::Red, FString::Printf(TEXT("%i"), (a)));
 			
-			if (PlayerPawn->SelectedPiece->GetOwingBlock()->column == PlayerPawn->SelectedBlock->column)
-			{
-				a = moveUp();
-				
-				if (a == 1)
-				{
-					GEngine->AddOnScreenDebugMessage(-1, 1.5f, FColor::Red, FString::Printf(TEXT("%i"), (a)));
-				}
-				else if (a == 2)
-				{
-					GEngine->AddOnScreenDebugMessage(-1, 1.5f, FColor::Red, FString::Printf(TEXT("%i"), (a)));
-				}
-			}
-
 
 			// Move the Piece in the new location
 			PlayerPawn->SelectedPiece->SetActorLocation(NewLocation);
 
 			PlayerPawn->SelectedPiece->OwningBlock = PlayerPawn->SelectedBlock;
-			PlayerPawn->SelectedPiece->indexPiece = PlayerPawn->SelectedBlock->index;
+			PlayerPawn->SelectedPiece->HandleIndexs(
+			PlayerPawn->SelectedBlock->index, PlayerPawn->SelectedBlock->column, PlayerPawn->SelectedBlock->row);
 			PlayerPawn->SelectedPiece->OwningBlock->bIsOccupied = true;
 			PlayerPawn->SelectedBlock->bIsOccupied = true;
 
@@ -141,106 +130,69 @@ void ATaflGamesBlock::HighlightBlock(bool bOn)
 	}
 }
 
-void ATaflGamesBlock::columnMove(int pieceColumn, int selectedBlockColumn, int pieceRow)
-{
-	if (pieceColumn < selectedBlockColumn)
-	{
-		/*for (int i = pieceColumn; i < selectedBlockColumn; i++)
-		{
-			GEngine->AddOnScreenDebugMessage(-1, 1.f, FColor::Blue,
-				FString::Printf(TEXT("Row: %i"), );
-		}*/
-
-		//checkColumn(pieceColumn, pieceRow);
-
-	}
-	/*else if (pieceColumn > selectedBlockColumn)
-	{
-
-	}*/
-}
-
-int ATaflGamesBlock::moveUp()
+int ATaflGamesBlock::columnMove()
 {
 	ATaflGamesGameMode* GameMode = Cast<ATaflGamesGameMode>(GetWorld()->GetAuthGameMode());
+	TArray<ATaflGamesBlock*> arr;
+	int i = 0;
 
-	int b = 0;
-
-	if (PlayerPawn->SelectedPiece->GetOwingBlock()->column == PlayerPawn->SelectedBlock->column)
+	if (PlayerPawn->SelectedPiece->columnPiece == PlayerPawn->SelectedBlock->column)
 	{
-		int32 j = 9;
-		int i = 0;
-
-		for (int32 i = 0; i < GameMode->blockArray.Num(); i++)
+		for (int32 j = 0; j < GameMode->blockArray.Num(); j++)
 		{
-			if (GameMode->blockArray[i]->column == PlayerPawn->SelectedPiece->GetOwingBlock()->column)
+			if (GameMode->blockArray[j]->column == PlayerPawn->SelectedPiece->columnPiece)
 			{
-				if (GameMode->blockArray[i]->index > PlayerPawn->SelectedPiece->indexPiece)
+				if (PlayerPawn->SelectedPiece->indexPiece < PlayerPawn->SelectedBlock->index)
 				{
-					if (GameMode->blockArray[i]->index < PlayerPawn->SelectedBlock->index)
+					if (GameMode->blockArray[j]->row > PlayerPawn->SelectedPiece->rowPiece &&
+						GameMode->blockArray[j]->row <= PlayerPawn->SelectedBlock->row)
 					{
-						if (GameMode->blockArray[i]->bIsOccupied == true)
-						{
-							b = 1;
-							return b;
-						}
-						else
-						{
-							b = 2;
-						}
+						arr.Add(GameMode->blockArray[j]);
+					}
+				}
+				else if (PlayerPawn->SelectedPiece->indexPiece > PlayerPawn->SelectedBlock->index)
+				{
+					if (GameMode->blockArray[j]->row < PlayerPawn->SelectedPiece->rowPiece &&
+						GameMode->blockArray[j]->row >= PlayerPawn->SelectedBlock->row)
+					{
+						arr.Add(GameMode->blockArray[j]);
 					}
 				}
 			}
 		}
 	}
 
-	return b;
+	/*for (int32 y = 0; y < arr.Num(); y++)
+	{
+		GEngine->AddOnScreenDebugMessage(-1, 120.f, FColor::Red,
+			FString::Printf(TEXT("%i"), arr[y]->index));
+	}*/
 
+	for (int32 l = 0; l < arr.Num(); l++)
+	{
+		if (arr[l]->bIsOccupied)
+		{
+			i = -1;
+			return i;
+		}
+		else
+			i = 1;
+	}
 
+	return i;
+}
 
-
-
-
-
-	//if (PlayerPawn->SelectedBlock->column == PlayerPawn->SelectedPiece->GetOwingBlock()->column)
-	//{
-	//	for (int32 i = 0; i < GameMode->pieceArray.Num(); i++)
-	//	{
-	//		/*if (GameMode->pieceArray[i]->indexPiece > PlayerPawn->SelectedPiece->indexPiece && 
-	//			GameMode->pieceArray[i]->GetOwingBlock()->column == PlayerPawn->SelectedPiece->GetOwingBlock()->column && 
-	//			GameMode->pieceArray[i]->indexPiece < PlayerPawn->SelectedBlock->index)
-	//		{
-	//			if (GameMode->pieceArray[i]->GetOwingBlock()->bIsOccupied == true)
-	//			{
-	//				b = false;
-	//				return b;
-	//			}
-	//			else
-	//			{
-	//				b = true;
-	//			}
-	//		}*/
-	//		
-	//		if (GameMode->pieceArray[i]->indexPiece > PlayerPawn->SelectedPiece->indexPiece)
-	//		{
-	//			if (GameMode->pieceArray[i]->indexPiece < PlayerPawn->SelectedBlock->index)
-	//			{
-	//				if (GameMode->pieceArray[i]->GetOwingBlock()->column == PlayerPawn->SelectedPiece->GetOwingBlock()->column)
-	//				{
-	//					if (GameMode->pieceArray[i]->GetOwingBlock()->bIsOccupied == true)
-	//					{
-	//						b = false;
-	//						return b;
-	//					}
-	//					else
-	//					{
-	//						b = true;
-	//					}
-	//				}
-	//			}
-	//		}
-
-	//	}
-	//}
-	//return b;
+int ATaflGamesBlock::rowMove()
+{
+	if (PlayerPawn->SelectedPiece->rowPiece == PlayerPawn->SelectedBlock->row)
+	{
+		if (PlayerPawn->SelectedPiece->indexPiece > PlayerPawn->SelectedBlock->index)
+		{
+			
+		}
+		else if (PlayerPawn->SelectedPiece->indexPiece < PlayerPawn->SelectedBlock->index)
+		{
+			//TODO
+		}
+	}
 }

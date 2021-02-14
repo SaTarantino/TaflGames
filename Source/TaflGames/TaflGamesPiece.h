@@ -28,6 +28,12 @@ public:
 	UPROPERTY(VisibleAnywhere, Category = Index)
 	int indexPiece;
 
+	UPROPERTY(VisibleAnywhere, Category = Index)
+	int columnPiece;
+
+	UPROPERTY(VisibleAnywhere, Category = Index)
+	int rowPiece;
+
 	/* Pointer to the white material used on the focussed block */
 	UPROPERTY()
 	class UMaterial* BaseMaterial;
@@ -55,6 +61,8 @@ public:
 	void HandleClicked();
 
 	void HighlightPiece(bool isActive);
+
+	void HandleIndexs(int index, int column, int row);
 
 public:
 	FORCEINLINE class USceneComponent* GetPieceRoot() const { return PieceRoot; }

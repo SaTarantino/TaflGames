@@ -134,3 +134,10 @@ void ATaflGamesPiece::HighlightPiece(bool isActive)
 		}
 	}
 }
+
+void ATaflGamesPiece::HandleIndexs(int index, int column, int row)
+{
+	indexPiece = index;
+	columnPiece = column;
+	rowPiece = row;
+}

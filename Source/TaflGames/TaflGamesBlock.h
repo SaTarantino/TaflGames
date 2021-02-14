@@ -67,9 +67,9 @@ public:
 
 	void HighlightBlock(bool bOn);
 
-	void columnMove(int pieceColumn, int selectedBlockColumn, int pieceRow);
+	int columnMove();
 
-	int moveUp();
+	int rowMove();
 
 public:
 	/** Returns DummyRoot subobject **/
