@@ -55,7 +55,6 @@ void ATaflGamesBlock::BlockClicked(UPrimitiveComponent* ClickedComp, FKey Button
 	if (!this->bIsOccupied && PlayerPawn->SelectedPiece != nullptr)
 	{
 		PlayerPawn->SelectedBlock = this;
-		PlayerPawn->SelectedPiece->OwningBlock->bIsOccupied = false;
 
 		HandleClicked();
 	}
@@ -73,33 +72,25 @@ void ATaflGamesBlock::HandleClicked()
 	}
 	else
 	{
-		int pieceColumn = PlayerPawn->SelectedPiece->GetOwingBlock()->column;
-		int pieceRow = PlayerPawn->SelectedPiece->GetOwingBlock()->row;
-		int blockColumn = PlayerPawn->SelectedBlock->column;
-		int blockRow = PlayerPawn->SelectedBlock->row;
-
-
-		if (pieceColumn == column || pieceRow == row)
+		if (PlayerPawn->SelectedPiece->GetOwingBlock()->column == column || 
+			PlayerPawn->SelectedPiece->GetOwingBlock()->row == row)
 		{
-			// Get the location of the new block
-			const FVector NewLocation = PlayerPawn->SelectedBlock->GetActorLocation();
-
-			ATaflGamesGameMode* GameMode = Cast<ATaflGamesGameMode>(GetWorld()->GetAuthGameMode());
-
 			int a = 0;
+			GEngine->ClearOnScreenDebugMessages();
 			a = columnMove();
-			//a = rowMove();
-			GEngine->AddOnScreenDebugMessage(-1, 1.5f, FColor::Red, FString::Printf(TEXT("%i"), (a)));
+			GEngine->AddOnScreenDebugMessage(-1, 1.5f, FColor::Blue, FString::Printf(TEXT("%i"), (a)));
 			
 
 			// Move the Piece in the new location
-			if (a == 1)
+			if (a > 0)
 			{
-				PlayerPawn->SelectedPiece->SetActorLocation(NewLocation);
+				PlayerPawn->SelectedPiece->SetActorLocation(PlayerPawn->SelectedBlock->GetActorLocation());
+				
+				PlayerPawn->SelectedPiece->OwningBlock->bIsOccupied = false;
 
 				PlayerPawn->SelectedPiece->OwningBlock = PlayerPawn->SelectedBlock;
-				PlayerPawn->SelectedPiece->HandleIndexs(
-					PlayerPawn->SelectedBlock->index, PlayerPawn->SelectedBlock->column, PlayerPawn->SelectedBlock->row);
+				PlayerPawn->SelectedPiece->HandleIndexs(PlayerPawn->SelectedBlock->index, 
+					PlayerPawn->SelectedBlock->column, PlayerPawn->SelectedBlock->row);
 				PlayerPawn->SelectedPiece->OwningBlock->bIsOccupied = true;
 				PlayerPawn->SelectedBlock->bIsOccupied = true;
 
@@ -170,52 +161,6 @@ int ATaflGamesBlock::columnMove()
 			{
 				if (PlayerPawn->SelectedPiece->indexPiece < PlayerPawn->SelectedBlock->index)
 				{
-					if (GameMode->blockArray[j]->column >= PlayerPawn->SelectedPiece->columnPiece &&
-						GameMode->blockArray[j]->column <= PlayerPawn->SelectedBlock->column)
-					{
-						blockArr.Add(GameMode->blockArray[j]);
-					}
-				}
-				else if (PlayerPawn->SelectedPiece->indexPiece > PlayerPawn->SelectedBlock->index)
-				{
-					if (GameMode->blockArray[j]->column <= PlayerPawn->SelectedPiece->columnPiece &&
-						GameMode->blockArray[j]->column >= PlayerPawn->SelectedBlock->column)
-					{
-						blockArr.Add(GameMode->blockArray[j]);
-					}
-				}
-			}
-		}
-	}
-
-	for (int32 l = 0; l < blockArr.Num(); l++)
-	{
-		if (blockArr[l]->bIsOccupied)
-		{
-			i = -1;
-			return i;
-		}
-		else
-			i = 1;
-	}
-
-	return i;
-}
-
-int ATaflGamesBlock::rowMove()
-{
-	ATaflGamesGameMode* GameMode = Cast<ATaflGamesGameMode>(GetWorld()->GetAuthGameMode());
-	TArray<ATaflGamesBlock*> blockArr;
-	int i = 0;
-	
-	if (PlayerPawn->SelectedPiece->rowPiece == PlayerPawn->SelectedBlock->row)
-	{
-		for (int32 j = 0; j < GameMode->blockArray.Num(); j++)
-		{
-			if (GameMode->blockArray[j]->row == PlayerPawn->SelectedPiece->rowPiece)
-			{
-				if (PlayerPawn->SelectedPiece->indexPiece < PlayerPawn->SelectedBlock->index)
-				{
 					if (GameMode->blockArray[j]->column > PlayerPawn->SelectedPiece->columnPiece &&
 						GameMode->blockArray[j]->column <= PlayerPawn->SelectedBlock->column)
 					{
@@ -231,12 +176,18 @@ int ATaflGamesBlock::rowMove()
 					}
 				}
 			}
-		}		
+		}
+	}
+
+	for (int32 y = 0; y < blockArr.Num(); y++)
+	{
+		GEngine->AddOnScreenDebugMessage(-1, 10.f, FColor::Red,
+			FString::Printf(TEXT("%i"), blockArr[y]->index));
 	}
 
 	for (int32 l = 0; l < blockArr.Num(); l++)
 	{
-		if (blockArr[l]->bIsOccupied)
+		if (blockArr[l]->bIsOccupied == true)
 		{
 			i = -1;
 			return i;
@@ -244,11 +195,6 @@ int ATaflGamesBlock::rowMove()
 		else
 			i = 1;
 	}
+	
 	return i;
 }
-
-/*for (int32 y = 0; y < arr.Num(); y++)
-	{
-		GEngine->AddOnScreenDebugMessage(-1, 120.f, FColor::Red,
-			FString::Printf(TEXT("%i"), blockArr[y]->index));
-	}*/

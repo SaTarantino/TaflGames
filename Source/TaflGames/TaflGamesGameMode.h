@@ -35,28 +35,8 @@ public:
 	*/
 	ATaflGamesGameMode* Tablut;
 	TArray<int>* spawn = new TArray<int>;
+	TArray<int>* spawn_ = new TArray<int>;
 	TArray<ATaflGamesPiece*> pieceArray;
 	TArray<ATaflGamesBlock*> blockArray;
 
-	// COLUMNS:
-	TArray<ATaflGamesBlock*> c1;
-	TArray<ATaflGamesBlock*> c2;
-	TArray<ATaflGamesBlock*> c3;
-	TArray<ATaflGamesBlock*> c4;
-	TArray<ATaflGamesBlock*> c5;
-	TArray<ATaflGamesBlock*> c6;
-	TArray<ATaflGamesBlock*> c7;
-	TArray<ATaflGamesBlock*> c8;
-	TArray<ATaflGamesBlock*> c9;
-
-	// ROWS:
-	TArray<ATaflGamesBlock*> r1;
-	TArray<ATaflGamesBlock*> r2;
-	TArray<ATaflGamesBlock*> r3;
-	TArray<ATaflGamesBlock*> r4;
-	TArray<ATaflGamesBlock*> r5;
-	TArray<ATaflGamesBlock*> r6;
-	TArray<ATaflGamesBlock*> r7;
-	TArray<ATaflGamesBlock*> r8;
-	TArray<ATaflGamesBlock*> r9;
 };

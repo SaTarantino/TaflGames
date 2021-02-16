@@ -69,8 +69,6 @@ public:
 
 	int columnMove();
 
-	int rowMove();
-
 public:
 	/** Returns DummyRoot subobject **/
 	FORCEINLINE class USceneComponent* GetDummyRoot() const { return DummyRoot; }
