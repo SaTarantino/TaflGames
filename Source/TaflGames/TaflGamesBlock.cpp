@@ -1,6 +1,7 @@
 #include "TaflGamesBlock.h"
 #include "TaflGamesBlockGrid.h"
 #include "TaflGamesGameMode.h"
+#include "TaflGamesPiece.h"
 #include "UObject/ConstructorHelpers.h"
 #include "Components/StaticMeshComponent.h"
 #include "Engine/StaticMesh.h"
@@ -15,13 +16,13 @@ ATaflGamesBlock::ATaflGamesBlock()
 	{
 		ConstructorHelpers::FObjectFinderOptional<UStaticMesh> PlaneMesh;
 		ConstructorHelpers::FObjectFinderOptional<UMaterial> BaseMaterial;
-		ConstructorHelpers::FObjectFinderOptional<UMaterialInstance> BlueMaterial;
 		ConstructorHelpers::FObjectFinderOptional<UMaterialInstance> OrangeMaterial;
+		ConstructorHelpers::FObjectFinderOptional<UMaterial> BlocksMaterial;
 		FConstructorStatics()
 			: PlaneMesh(TEXT("/Game/Puzzle/Meshes/PuzzleCube.PuzzleCube"))
 			, BaseMaterial(TEXT("/Game/Puzzle/Meshes/BaseMaterial.BaseMaterial"))
 			, OrangeMaterial(TEXT("/Game/Puzzle/Meshes/OrangeMaterial.OrangeMaterial"))
-			, BlueMaterial(TEXT("/Game/Puzzle/Meshes/BlueMaterial.BlueMaterial"))
+			, BlocksMaterial(TEXT("/Game/Puzzle/Meshes/M_Wood_Oak.M_Wood_Oak"))
 		{
 		}
 	};
@@ -43,10 +44,9 @@ ATaflGamesBlock::ATaflGamesBlock()
 	// Save a pointer to the orange material. USATO nel caso serva cambiare colore ai blocchi.
 	BaseMaterial = ConstructorStatics.BaseMaterial.Get();
 	OrangeMaterial = ConstructorStatics.OrangeMaterial.Get();
-	BlueMaterial = ConstructorStatics.BlueMaterial.Get();
+	BlocksMaterial = ConstructorStatics.BlocksMaterial.Get();
 
 	PlayerPawn = Cast<ATaflGamesPawn>(UGameplayStatics::GetPlayerPawn(this, 0));
-	//TArray<int32> GameGrid = this->OwningGrid->getCoordinateArray();
 }
 
 // The block just clicked.
@@ -75,14 +75,8 @@ void ATaflGamesBlock::HandleClicked()
 		if (PlayerPawn->SelectedPiece->GetOwingBlock()->column == column || 
 			PlayerPawn->SelectedPiece->GetOwingBlock()->row == row)
 		{
-			int a = 0;
-			GEngine->ClearOnScreenDebugMessages();
-			a = columnMove();
-			GEngine->AddOnScreenDebugMessage(-1, 1.5f, FColor::Blue, FString::Printf(TEXT("%i"), (a)));
-			
-
 			// Move the Piece in the new location
-			if (a > 0)
+			if (PiceMove() == 1)
 			{
 				PlayerPawn->SelectedPiece->SetActorLocation(PlayerPawn->SelectedBlock->GetActorLocation());
 				
@@ -97,6 +91,8 @@ void ATaflGamesBlock::HandleClicked()
 				// Set the block and piece back to the their original color
 				this->HighlightBlock(false);
 				PlayerPawn->SelectedPiece->PieceClicked(PlayerPawn->SelectedPiece->GetPieceMesh(), FKey("LeftMouseClick"));
+
+				//CapturePiece();
 			}
 			else return;
 		}
@@ -122,20 +118,25 @@ void ATaflGamesBlock::HighlightBlock(bool bOn)
 	}
 }
 
-int ATaflGamesBlock::columnMove()
+int ATaflGamesBlock::PiceMove()
 {
 	ATaflGamesGameMode* GameMode = Cast<ATaflGamesGameMode>(GetWorld()->GetAuthGameMode());
 	TArray<ATaflGamesBlock*> blockArr;
 	int i = 0;
 
+	// Columng move (Up/Down)
 	if (PlayerPawn->SelectedPiece->columnPiece == PlayerPawn->SelectedBlock->column)
 	{
 		for (int32 j = 0; j < GameMode->blockArray.Num(); j++)
 		{
+			// Check if the j is in the same column as the Selected Pice.
 			if (GameMode->blockArray[j]->column == PlayerPawn->SelectedPiece->columnPiece)
 			{
+				// Check if the Pice index is greater or smaller than the Selected Block index
+				// If is smaller is moving Up otherwise is moving Down.
 				if (PlayerPawn->SelectedPiece->indexPiece < PlayerPawn->SelectedBlock->index)
 				{
+					// Add the blocks between the Start block and the End block.
 					if (GameMode->blockArray[j]->row > PlayerPawn->SelectedPiece->rowPiece &&
 						GameMode->blockArray[j]->row <= PlayerPawn->SelectedBlock->row)
 					{
@@ -153,6 +154,7 @@ int ATaflGamesBlock::columnMove()
 			}
 		}
 	}
+	// Row move (Left/Right)
 	else if (PlayerPawn->SelectedPiece->rowPiece == PlayerPawn->SelectedBlock->row)
 	{
 		for (int32 j = 0; j < GameMode->blockArray.Num(); j++)
@@ -179,12 +181,7 @@ int ATaflGamesBlock::columnMove()
 		}
 	}
 
-	for (int32 y = 0; y < blockArr.Num(); y++)
-	{
-		GEngine->AddOnScreenDebugMessage(-1, 10.f, FColor::Red,
-			FString::Printf(TEXT("%i"), blockArr[y]->index));
-	}
-
+	// Loop through the blockArray, if one of the block is occupied return -1 and exit.
 	for (int32 l = 0; l < blockArr.Num(); l++)
 	{
 		if (blockArr[l]->bIsOccupied == true)
@@ -198,3 +195,20 @@ int ATaflGamesBlock::columnMove()
 	
 	return i;
 }
+
+//void ATaflGamesBlock::CapturePiece()
+//{
+//	ATaflGamesGameMode* GameMode = Cast<ATaflGamesGameMode>(GetWorld()->GetAuthGameMode());
+//
+//	if (GameMode->blockArray[PlayerPawn->SelectedPiece->indexPiece - 1]->bIsOccupied && 
+//		GameMode->blockArray[PlayerPawn->SelectedPiece->indexPiece + 1]->bIsOccupied)
+//	{
+//		GEngine->AddOnScreenDebugMessage(-1, 10.f, FColor::Black,
+//			FString::Printf(TEXT("Occupied")));
+//	}
+//	else
+//	{
+//		GEngine->AddOnScreenDebugMessage(-1, 10.f, FColor::Black,
+//			FString::Printf(TEXT("NOT Occupied")));
+//	}
+//}

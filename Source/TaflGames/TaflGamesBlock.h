@@ -49,7 +49,7 @@ public:
 	class UMaterialInstance* OrangeMaterial;
 
 	UPROPERTY()
-	class UMaterialInstance* BlueMaterial;
+	class UMaterial* BlocksMaterial;
 
 	/** Grid that owns us */
 	UPROPERTY()
@@ -67,7 +67,9 @@ public:
 
 	void HighlightBlock(bool bOn);
 
-	int columnMove();
+	int PiceMove();
+
+	//void CapturePiece();
 
 public:
 	/** Returns DummyRoot subobject **/

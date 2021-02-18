@@ -68,7 +68,6 @@ void ATaflGamesBlockGrid::BeginPlay()
 			countRow++;
 		}
 
-
 		// Set the column
 		if (countColumn != Size)
 		{
@@ -83,12 +82,10 @@ void ATaflGamesBlockGrid::BeginPlay()
 			countColumn = 1;
 		}
 
-
-
 		index++;
 
-
-		// If the index is in the array of the spawn, spawn a pice in that blox.
+		// If the index is in the array of the spawn, spawn a pice in that box.
+		// Spawn the attacker.
 		if (GameMode->spawn->Contains(index))
 		{
 			ATaflGamesPiece* NewPiece = GetWorld()->SpawnActor<ATaflGamesPiece>(BlockLocation, FRotator(0, 0, 0));
@@ -96,9 +93,31 @@ void ATaflGamesBlockGrid::BeginPlay()
 			{
 				NewPiece->OwningBlock = NewBlock;
 				NewPiece->HandleIndexs(NewBlock->index, NewBlock->column, NewBlock->row);
+				
+				// Set the Piece Material
+				NewPiece->SetPieceMaterial(NewPiece->CopperMaterial);
+				NewPiece->PieceMaterial = NewPiece->CopperMaterial;
+
 				GameMode->pieceArray.Add(NewPiece);
 
-				NewPiece->indexPiece = NewPiece->OwningBlock->index;
+				NewBlock->bIsOccupied = true;
+			}
+		}
+		// Spawn the defenders.
+		else if (GameMode->spawn_->Contains(index))
+		{
+			ATaflGamesPiece* NewPiece_ = GetWorld()->SpawnActor<ATaflGamesPiece>(BlockLocation, FRotator(0, 0, 0));
+			if (NewPiece_ != nullptr && NewBlock != nullptr)
+			{
+				NewPiece_->OwningBlock = NewBlock;
+				NewPiece_->HandleIndexs(NewBlock->index, NewBlock->column, NewBlock->row);
+
+				// Set the Piece Material
+				NewPiece_->SetPieceMaterial(NewPiece_->SteelMaterial);
+				NewPiece_->PieceMaterial = NewPiece_->SteelMaterial;
+
+				GameMode->pieceArray.Add(NewPiece_);
+
 				NewBlock->bIsOccupied = true;
 			}
 		}
@@ -109,12 +128,6 @@ void ATaflGamesBlockGrid::BeginPlay()
 			NewBlock->OwningGrid = this;
 		}
 	}
-
-	/*for (int32 i = 0; i < GameMode->pieceArray.Num(); i++)
-	{
-		GEngine->AddOnScreenDebugMessage(-1, 100.f, FColor::Red,
-			FString::Printf(TEXT("%i"), GameMode->pieceArray[i]->indexPiece));
-	}*/
 }
 
 #undef LOCTEXT_NAMESPACE

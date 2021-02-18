@@ -1,7 +1,10 @@
 #include "TaflGamesPiece.h"
+#include "TaflGamesGameMode.h"
+#include "TaflGamesBlock.h"
 #include "UObject/ConstructorHelpers.h"
 #include "Components/StaticMeshComponent.h"
 #include "Engine/StaticMesh.h"
+#include "Engine/Engine.h"
 #include "Materials/MaterialInstance.h"
 #include "Kismet/GameplayStatics.h"
 
@@ -17,11 +20,16 @@ ATaflGamesPiece::ATaflGamesPiece()
 		ConstructorHelpers::FObjectFinderOptional<UMaterial> BaseMaterial;
 		ConstructorHelpers::FObjectFinderOptional<UMaterialInstance> BlueMaterial;
 		ConstructorHelpers::FObjectFinderOptional<UMaterialInstance> OrangeMaterial;
+		ConstructorHelpers::FObjectFinderOptional<UMaterial> CopperMaterial;
+		ConstructorHelpers::FObjectFinderOptional<UMaterial> SteelMaterial;
+
 		FConstructorStatics()
 			: Shape_Cylinder(TEXT("/Game/StarterContent/Shapes/Shape_Cylinder.Shape_Cylinder"))
 			, BaseMaterial(TEXT("/Game/Puzzle/Meshes/BaseMaterial.BaseMaterial"))
 			, BlueMaterial(TEXT("/Game/Puzzle/Meshes/BlueMaterial.BlueMaterial"))
 			, OrangeMaterial(TEXT("/Game/Puzzle/Meshes/OrangeMaterial.OrangeMaterial"))
+			, CopperMaterial(TEXT("/Game/Puzzle/Meshes/MetalCopper.MetalCopper"))
+			, SteelMaterial(TEXT("/Game/Puzzle/Meshes/M_Metal_Chrome.M_Metal_Chrome"))
 		{
 		}
 	};
@@ -34,7 +42,7 @@ ATaflGamesPiece::ATaflGamesPiece()
 	PieceMesh->SetStaticMesh(ConstructorStatics.Shape_Cylinder.Get());
 	PieceMesh->SetRelativeScale3D(FVector(1.f, 1.f, 1.f));
 	PieceMesh->SetRelativeLocation(FVector(0.f, 0.f, 25.f));
-	PieceMesh->SetMaterial(0, ConstructorStatics.BlueMaterial.Get());
+	//PieceMesh->SetMaterial(0, ConstructorStatics.BlueMaterial.Get());
 	PieceMesh->SetupAttachment(PieceRoot);
 	PieceMesh->OnClicked.AddDynamic(this, &ATaflGamesPiece::PieceClicked);
 
@@ -42,7 +50,8 @@ ATaflGamesPiece::ATaflGamesPiece()
 	BaseMaterial = ConstructorStatics.BaseMaterial.Get();
 	BlueMaterial = ConstructorStatics.BlueMaterial.Get();
 	OrangeMaterial = ConstructorStatics.OrangeMaterial.Get();
-
+	CopperMaterial = ConstructorStatics.CopperMaterial.Get();
+	SteelMaterial = ConstructorStatics.SteelMaterial.Get();
 	PlayerPawn = Cast<ATaflGamesPawn>(UGameplayStatics::GetPlayerPawn(this, 0));
 }
 
@@ -105,7 +114,7 @@ void ATaflGamesPiece::HandleClicked()
 	{
 		bIsActive = false;
 
-		PieceMesh->SetMaterial(0, BlueMaterial);
+		PieceMesh->SetMaterial(0, PieceMaterial);
 	}
 }
 
@@ -130,7 +139,7 @@ void ATaflGamesPiece::HighlightPiece(bool isActive)
 		}
 		else
 		{
-			PieceMesh->SetMaterial(0, BlueMaterial);
+			PieceMesh->SetMaterial(0, PieceMaterial);
 		}
 	}
 }
@@ -140,4 +149,9 @@ void ATaflGamesPiece::HandleIndexs(int index, int column, int row)
 	indexPiece = index;
 	columnPiece = column;
 	rowPiece = row;
+}
+
+void ATaflGamesPiece::SetPieceMaterial(UMaterial* pieceMaterial)
+{
+	PieceMesh->SetMaterial(0, pieceMaterial);
 }

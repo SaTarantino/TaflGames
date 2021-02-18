@@ -45,6 +45,15 @@ public:
 	UPROPERTY()
 	class UMaterialInstance* OrangeMaterial;
 
+	UPROPERTY()
+	class UMaterial* CopperMaterial;
+
+	UPROPERTY()
+	class UMaterial* SteelMaterial;
+
+	UPROPERTY()
+	class UMaterial* PieceMaterial;
+
 	/*UPROPERTY()
 	class ATaflGamesBlockGrid* OwningGrid;*/
 
@@ -63,6 +72,10 @@ public:
 	void HighlightPiece(bool isActive);
 
 	void HandleIndexs(int index, int column, int row);
+
+	//void CapturePiece();
+
+	void SetPieceMaterial(UMaterial* pieceMaterial);
 
 public:
 	FORCEINLINE class USceneComponent* GetPieceRoot() const { return PieceRoot; }
