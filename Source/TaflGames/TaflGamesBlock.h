@@ -69,11 +69,14 @@ public:
 
 	int PiceMove();
 
-	//void CapturePiece();
+	void CapturePiece();
+
+	float xLoc();
 
 public:
-	/** Returns DummyRoot subobject **/
+	FORCEINLINE float GetBlockX() const { return this->GetActorLocation().X; }
+	FORCEINLINE float GetBlockY() const { return this->GetActorLocation().Y; }
+
 	FORCEINLINE class USceneComponent* GetDummyRoot() const { return DummyRoot; }
-	/** Returns BlockMesh subobject **/
 	FORCEINLINE class UStaticMeshComponent* GetBlockMesh() const { return BlockMesh; }
 };

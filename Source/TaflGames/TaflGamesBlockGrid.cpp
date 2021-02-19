@@ -93,7 +93,7 @@ void ATaflGamesBlockGrid::BeginPlay()
 			{
 				NewPiece->OwningBlock = NewBlock;
 				NewPiece->HandleIndexs(NewBlock->index, NewBlock->column, NewBlock->row);
-				
+				NewPiece->typePice = 1;
 				// Set the Piece Material
 				NewPiece->SetPieceMaterial(NewPiece->CopperMaterial);
 				NewPiece->PieceMaterial = NewPiece->CopperMaterial;
@@ -111,7 +111,7 @@ void ATaflGamesBlockGrid::BeginPlay()
 			{
 				NewPiece_->OwningBlock = NewBlock;
 				NewPiece_->HandleIndexs(NewBlock->index, NewBlock->column, NewBlock->row);
-
+				NewPiece_->typePice = 2;
 				// Set the Piece Material
 				NewPiece_->SetPieceMaterial(NewPiece_->SteelMaterial);
 				NewPiece_->PieceMaterial = NewPiece_->SteelMaterial;

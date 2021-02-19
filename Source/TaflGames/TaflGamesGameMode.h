@@ -36,6 +36,10 @@ public:
 	ATaflGamesGameMode* Tablut;
 	TArray<int>* spawn = new TArray<int>;
 	TArray<int>* spawn_ = new TArray<int>;
+
+	/*TArray<ATaflGamesPiece*> attPices;
+	TArray<ATaflGamesPiece*> deffPices;*/
+		
 	TArray<ATaflGamesPiece*> pieceArray;
 	TArray<ATaflGamesBlock*> blockArray;
 

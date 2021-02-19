@@ -88,11 +88,13 @@ void ATaflGamesBlock::HandleClicked()
 				PlayerPawn->SelectedPiece->OwningBlock->bIsOccupied = true;
 				PlayerPawn->SelectedBlock->bIsOccupied = true;
 
+				//CapturePiece();
+				
 				// Set the block and piece back to the their original color
 				this->HighlightBlock(false);
 				PlayerPawn->SelectedPiece->PieceClicked(PlayerPawn->SelectedPiece->GetPieceMesh(), FKey("LeftMouseClick"));
 
-				//CapturePiece();
+				
 			}
 			else return;
 		}
@@ -192,23 +194,35 @@ int ATaflGamesBlock::PiceMove()
 		else
 			i = 1;
 	}
-	
 	return i;
 }
 
-//void ATaflGamesBlock::CapturePiece()
-//{
-//	ATaflGamesGameMode* GameMode = Cast<ATaflGamesGameMode>(GetWorld()->GetAuthGameMode());
-//
-//	if (GameMode->blockArray[PlayerPawn->SelectedPiece->indexPiece - 1]->bIsOccupied && 
-//		GameMode->blockArray[PlayerPawn->SelectedPiece->indexPiece + 1]->bIsOccupied)
-//	{
-//		GEngine->AddOnScreenDebugMessage(-1, 10.f, FColor::Black,
-//			FString::Printf(TEXT("Occupied")));
-//	}
-//	else
-//	{
-//		GEngine->AddOnScreenDebugMessage(-1, 10.f, FColor::Black,
-//			FString::Printf(TEXT("NOT Occupied")));
-//	}
-//}
+void ATaflGamesBlock::CapturePiece()
+{
+	ATaflGamesGameMode* GameMode = Cast<ATaflGamesGameMode>(GetWorld()->GetAuthGameMode());
+	int i = PlayerPawn->SelectedPiece->indexPiece;
+	
+	if ((i - 1) > -1 && (i + 1) < 81)
+	{
+		
+		GEngine->AddOnScreenDebugMessage(-1, 1.f, FColor::Red,
+			FString::Printf(TEXT("AAAAA")));
+		
+		/*if (GameMode->blockArray[i - 1]->bIsOccupied &&
+			GameMode->blockArray[i + 1]->bIsOccupied)
+		{
+			GEngine->AddOnScreenDebugMessage(-1, 10.f, FColor::Black,
+				FString::Printf(TEXT("Occupied")));
+		}
+		else
+		{
+			GEngine->AddOnScreenDebugMessage(-1, 10.f, FColor::Black,
+				FString::Printf(TEXT("NOT Occupied")));
+		}*/
+	}
+}
+
+float ATaflGamesBlock::xLoc()
+{
+	return this->GetActorLocation().X;
+}

@@ -34,6 +34,10 @@ public:
 	UPROPERTY(VisibleAnywhere, Category = Index)
 	int rowPiece;
 
+	/* Define the type of pice, 1 attackers, 2 defenders*/
+	UPROPERTY(VisibleAnywhere, Category = Index)
+	int typePice;
+
 	/* Pointer to the white material used on the focussed block */
 	UPROPERTY()
 	class UMaterial* BaseMaterial;
@@ -78,7 +82,12 @@ public:
 	void SetPieceMaterial(UMaterial* pieceMaterial);
 
 public:
+
+	FORCEINLINE float GetPieceX() const { return this->GetActorLocation().X; }
+	FORCEINLINE float GetPieceY() const { return this->GetActorLocation().Y; }
+
+	FORCEINLINE class ATaflGamesBlock* GetOwingBlock() const { return OwningBlock; }
+
 	FORCEINLINE class USceneComponent* GetPieceRoot() const { return PieceRoot; }
 	FORCEINLINE class UStaticMeshComponent* GetPieceMesh() const { return PieceMesh; }
-	FORCEINLINE class ATaflGamesBlock* GetOwingBlock() const { return OwningBlock; }
 };
