@@ -71,7 +71,7 @@ public:
 
 	void CapturePiece();
 
-	float xLoc();
+	TArray<ATaflGamesBlock*> GetClose();
 
 public:
 	FORCEINLINE float GetBlockX() const { return this->GetActorLocation().X; }

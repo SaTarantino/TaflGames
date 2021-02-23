@@ -88,7 +88,13 @@ void ATaflGamesBlock::HandleClicked()
 				PlayerPawn->SelectedPiece->OwningBlock->bIsOccupied = true;
 				PlayerPawn->SelectedBlock->bIsOccupied = true;
 
+				GetClose();
+
 				//CapturePiece();
+				/*TArray<ATaflGamesBlock*> bA = GetClose();
+				
+				for (int i = 0; i < bA.Num(); i++)
+					GEngine->AddOnScreenDebugMessage(-1, 10.f, FColor::Black, FString::Printf(TEXT("%i"), bA[i]->index));*/
 				
 				// Set the block and piece back to the their original color
 				this->HighlightBlock(false);
@@ -222,7 +228,44 @@ void ATaflGamesBlock::CapturePiece()
 	}
 }
 
-float ATaflGamesBlock::xLoc()
+TArray<ATaflGamesBlock*> ATaflGamesBlock::GetClose()
 {
-	return this->GetActorLocation().X;
+	float xBlock = this->GetBlockX();
+	float yBlock = this->GetBlockY();
+
+	ATaflGamesGameMode* GameMode = Cast<ATaflGamesGameMode>(GetWorld()->GetAuthGameMode());
+	TArray<ATaflGamesBlock*> arrBlock;
+
+	for (int32 i = 0; i < GameMode->blockArray.Num(); i++)
+	{
+		// Left and Right
+		if (GameMode->blockArray[i]->GetBlockX() == PlayerPawn->SelectedBlock->GetBlockX() && 
+			GameMode->blockArray[i]->GetBlockY() == (PlayerPawn->SelectedBlock->GetBlockY() - 265))
+		{
+			arrBlock.Add(GameMode->blockArray[i]);
+		}
+		else if (GameMode->blockArray[i]->GetBlockX() == PlayerPawn->SelectedBlock->GetBlockX() && 
+			GameMode->blockArray[i]->GetBlockY() == (PlayerPawn->SelectedBlock->GetBlockY() + 265))
+		{
+			arrBlock.Add(GameMode->blockArray[i]);
+		}
+		// Up and Down
+		else if (GameMode->blockArray[i]->GetBlockY() == PlayerPawn->SelectedBlock->GetBlockY() &&
+			GameMode->blockArray[i]->GetBlockX() == (PlayerPawn->SelectedBlock->GetBlockX() + 265))
+		{
+			arrBlock.Add(GameMode->blockArray[i]);
+		}
+		else if (GameMode->blockArray[i]->GetBlockY() == PlayerPawn->SelectedBlock->GetBlockY() &&
+			GameMode->blockArray[i]->GetBlockX() == (PlayerPawn->SelectedBlock->GetBlockX() - 265))
+		{
+			arrBlock.Add(GameMode->blockArray[i]);
+		}
+	}
+	
+	for (int32 i = 0; i < arrBlock.Num(); i++)
+	{
+		GEngine->AddOnScreenDebugMessage(-1, 5.f, FColor::Red, FString::Printf(TEXT("%i"), arrBlock[i]->index));
+	}
+	
+	return arrBlock;
 }
