@@ -38,6 +38,9 @@ public:
 	UPROPERTY(VisibleAnywhere, Category = Index)
 	int typePice;
 
+	UPROPERTY(VisibleAnywhere, Category = Index)
+	bool bIsKing;
+
 	/* Pointer to the white material used on the focussed block */
 	UPROPERTY()
 	class UMaterial* BaseMaterial;

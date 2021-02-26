@@ -73,6 +73,9 @@ public:
 
 	TArray<ATaflGamesBlock*> GetClose();
 
+	/** Used to get the pice on top of the given block**/
+	class ATaflGamesPiece* GetPiece(ATaflGamesBlock* block);
+
 public:
 	FORCEINLINE float GetBlockX() const { return this->GetActorLocation().X; }
 	FORCEINLINE float GetBlockY() const { return this->GetActorLocation().Y; }

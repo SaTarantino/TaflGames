@@ -99,8 +99,6 @@ void ATaflGamesBlock::HandleClicked()
 				// Set the block and piece back to the their original color
 				this->HighlightBlock(false);
 				PlayerPawn->SelectedPiece->PieceClicked(PlayerPawn->SelectedPiece->GetPieceMesh(), FKey("LeftMouseClick"));
-
-				
 			}
 			else return;
 		}
@@ -130,7 +128,6 @@ int ATaflGamesBlock::PiceMove()
 {
 	ATaflGamesGameMode* GameMode = Cast<ATaflGamesGameMode>(GetWorld()->GetAuthGameMode());
 	TArray<ATaflGamesBlock*> blockArr;
-	int i = 0;
 
 	// Columng move (Up/Down)
 	if (PlayerPawn->SelectedPiece->columnPiece == PlayerPawn->SelectedBlock->column)
@@ -188,8 +185,10 @@ int ATaflGamesBlock::PiceMove()
 			}
 		}
 	}
-
+	
 	// Loop through the blockArray, if one of the block is occupied return -1 and exit.
+	int i = 0;
+
 	for (int32 l = 0; l < blockArr.Num(); l++)
 	{
 		if (blockArr[l]->bIsOccupied == true)
@@ -230,42 +229,60 @@ void ATaflGamesBlock::CapturePiece()
 
 TArray<ATaflGamesBlock*> ATaflGamesBlock::GetClose()
 {
-	float xBlock = this->GetBlockX();
-	float yBlock = this->GetBlockY();
-
 	ATaflGamesGameMode* GameMode = Cast<ATaflGamesGameMode>(GetWorld()->GetAuthGameMode());
 	TArray<ATaflGamesBlock*> arrBlock;
-
+	
 	for (int32 i = 0; i < GameMode->blockArray.Num(); i++)
 	{
-		// Left and Right
-		if (GameMode->blockArray[i]->GetBlockX() == PlayerPawn->SelectedBlock->GetBlockX() && 
-			GameMode->blockArray[i]->GetBlockY() == (PlayerPawn->SelectedBlock->GetBlockY() - 265))
+		if (GameMode->blockArray[i]->bIsOccupied)
 		{
-			arrBlock.Add(GameMode->blockArray[i]);
-		}
-		else if (GameMode->blockArray[i]->GetBlockX() == PlayerPawn->SelectedBlock->GetBlockX() && 
-			GameMode->blockArray[i]->GetBlockY() == (PlayerPawn->SelectedBlock->GetBlockY() + 265))
-		{
-			arrBlock.Add(GameMode->blockArray[i]);
-		}
-		// Up and Down
-		else if (GameMode->blockArray[i]->GetBlockY() == PlayerPawn->SelectedBlock->GetBlockY() &&
-			GameMode->blockArray[i]->GetBlockX() == (PlayerPawn->SelectedBlock->GetBlockX() + 265))
-		{
-			arrBlock.Add(GameMode->blockArray[i]);
-		}
-		else if (GameMode->blockArray[i]->GetBlockY() == PlayerPawn->SelectedBlock->GetBlockY() &&
-			GameMode->blockArray[i]->GetBlockX() == (PlayerPawn->SelectedBlock->GetBlockX() - 265))
-		{
-			arrBlock.Add(GameMode->blockArray[i]);
+			// Left and Right
+			if (GameMode->blockArray[i]->GetBlockX() == PlayerPawn->SelectedBlock->GetBlockX() && 
+				GameMode->blockArray[i]->GetBlockY() == (PlayerPawn->SelectedBlock->GetBlockY() - 265) &&
+				PlayerPawn->SelectedPiece->typePice != GameMode->blockArray[i]->GetPiece(GameMode->blockArray[i])->typePice)
+			{
+				arrBlock.Add(GameMode->blockArray[i]);
+			}
+			else if (GameMode->blockArray[i]->GetBlockX() == PlayerPawn->SelectedBlock->GetBlockX() && 
+				GameMode->blockArray[i]->GetBlockY() == (PlayerPawn->SelectedBlock->GetBlockY() + 265) &&
+				PlayerPawn->SelectedPiece->typePice != GameMode->blockArray[i]->GetPiece(GameMode->blockArray[i])->typePice)
+			{
+				arrBlock.Add(GameMode->blockArray[i]);
+			}
+			// Up and Down
+			else if (GameMode->blockArray[i]->GetBlockY() == PlayerPawn->SelectedBlock->GetBlockY() &&
+				GameMode->blockArray[i]->GetBlockX() == (PlayerPawn->SelectedBlock->GetBlockX() + 265) &&
+				PlayerPawn->SelectedPiece->typePice != GameMode->blockArray[i]->GetPiece(GameMode->blockArray[i])->typePice)
+			{
+				arrBlock.Add(GameMode->blockArray[i]);
+			}
+			else if (GameMode->blockArray[i]->GetBlockY() == PlayerPawn->SelectedBlock->GetBlockY() &&
+				GameMode->blockArray[i]->GetBlockX() == (PlayerPawn->SelectedBlock->GetBlockX() - 265) &&
+				PlayerPawn->SelectedPiece->typePice != GameMode->blockArray[i]->GetPiece(GameMode->blockArray[i])->typePice)
+			{
+				arrBlock.Add(GameMode->blockArray[i]);
+			}
 		}
 	}
 	
-	for (int32 i = 0; i < arrBlock.Num(); i++)
+	for (int j = 0; j < arrBlock.Num(); j++)
 	{
-		GEngine->AddOnScreenDebugMessage(-1, 5.f, FColor::Red, FString::Printf(TEXT("%i"), arrBlock[i]->index));
+		GEngine->AddOnScreenDebugMessage(-1, 5.f, FColor::Red,
+			FString::Printf(TEXT("%i"), arrBlock[j]->index));
 	}
-	
+
 	return arrBlock;
+}
+
+class ATaflGamesPiece* ATaflGamesBlock::GetPiece(ATaflGamesBlock* block)
+{
+	ATaflGamesGameMode* GameMode = Cast<ATaflGamesGameMode>(GetWorld()->GetAuthGameMode());
+
+	for (int32 i = 0; i < GameMode->pieceArray.Num(); i++)
+	{
+		if (block->index == GameMode->pieceArray[i]->indexPiece)
+			return GameMode->pieceArray[i];
+	}
+
+	return NULL;
 }
